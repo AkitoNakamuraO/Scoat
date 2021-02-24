@@ -1,0 +1,34 @@
+title PlaceSharing
+
+alt　場所登録
+User->App:登録する場所を入力
+App->placesDB:入力された場所を保存
+App->User:製作されたカレンダーを表示
+else 予定登録
+User->App:予定を登録したい場所を選択
+App->placesDB:その場所があるか確認
+alt 存在しない
+placesDB->App:存在しない
+App->User:存在しないことを伝える
+else　存在する
+placesDB->App:存在する
+App->User:予定の入力を要求
+User->App:予定を入力
+App->schedulesDB:予定を保存
+App->schedulesDB:場所と一致するデータを要求
+schedulesDB->App:データを返す
+App->User:データを反映させたカレンダーを表示
+end
+else 予定確認
+User->App:カレンダーを表示したい場所を入力
+App->placesDB:その場所があるか確認
+alt 存在しない
+placesDB->App:存在しない
+App->User:存在しないことを伝える
+else　存在する
+placesDB->App:存在する
+App->schedulesDB:場所と一致するデータを要求
+schedulesDB->App:データを返す
+App->User:データを反映させたカレンダーを表示
+end
+end
