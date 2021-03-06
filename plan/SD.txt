@@ -1,34 +1,61 @@
-title PlaceSharing
+title Scoat
 
 alt　場所登録
-User->App:登録する場所を入力
-App->placesDB:入力された場所を保存
-App->User:製作されたカレンダーを表示
-else 予定登録
-User->App:予定を登録したい場所を選択
-App->placesDB:その場所があるか確認
-alt 存在しない
-placesDB->App:存在しない
-App->User:存在しないことを伝える
-else　存在する
-placesDB->App:存在する
-App->User:予定の入力を要求
-User->App:予定を入力
-App->schedulesDB:予定を保存
-App->schedulesDB:場所と一致するデータを要求
-schedulesDB->App:データを返す
-App->User:データを反映させたカレンダーを表示
-end
-else 予定確認
-User->App:カレンダーを表示したい場所を入力
-App->placesDB:その場所があるか確認
-alt 存在しない
-placesDB->App:存在しない
-App->User:存在しないことを伝える
-else　存在する
-placesDB->App:存在する
-App->schedulesDB:場所と一致するデータを要求
-schedulesDB->App:データを返す
-App->User:データを反映させたカレンダーを表示
-end
+User->App:登録する場所情報と管理者情報を入力
+App->placesDB:入力された場所情報を保存
+App->adminsDB:入力された管理者情報を保存
+App->placesDB:場所情報を要求
+placesDB->App:場所情報を返す
+App->User:管理画面を表示
+else 管理画面にアクセス
+User->App:ログイン情報を入力
+App->adminsDB:ログイン情報と比較
+alt ログイン成功
+App->placesDB:場所情報を要求
+App->adminsDB:管理者情報を要求
+placesDB->App:場所情報を返す
+adminsDB->App:管理者情報を返す
+App->User:管理者画面を表示
+alt パスワード変更
+User->App:新しいパスワードを入力
+App->adminsDB:パスワードを更新
+App->User:管理者画面を表示
+end 
+else ログイン失敗
+User->App:新しいパスワードをメールに送信を要求
+App->adminsDB:メールアドレスを要求
+adminsDB->App:メールアドレスを返す
+App->User:新しいパスワードを管理者のメールアドレスに送信
+end 
+else カレンダーを表示
+User->App:URLでカレンダーにアクセス
+App->placesDB:場所情報を要求
+App->schedulesDB:カレンダー情報を要求
+placesDB->App:場所情報を返す
+schedulesDB->App:カレンダー情報を返す
+App->User:カレンダーを表示
+else 予定の登録
+User->App:新しい予定を入力
+App->schedulesDB:予定情報を保存
+App->placesDB:場所情報を要求
+App->schedulesDB:カレンダー情報を要求
+placesDB->App:場所情報を返す
+schedulesDB->App:カレンダー情報を返す
+App->User:カレンダーを表示
+else 予定の更新
+User->App:予定の更新内容を入力
+App->schedulesDB:予定情報を更新
+App->placesDB:場所情報を要求
+App->schedulesDB:カレンダー情報を要求
+placesDB->App:場所情報を返す
+schedulesDB->App:カレンダー情報を返す
+App->User:カレンダーを表示
+else 予定の削除
+User->App:削除する予定を選択
+App->schedulesDB:予定情報を削除
+App->placesDB:場所情報を要求
+App->schedulesDB:カレンダー情報を要求
+placesDB->App:場所情報を返す
+schedulesDB->App:カレンダー情報を返す
+App->User:カレンダーを表示
 end
