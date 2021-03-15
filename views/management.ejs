@@ -1,12 +1,43 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%= title %></title>
-    <link rel="stylesheet" href="/stylesheets/normalize.css" />
-    <link rel="stylesheet" href="/stylesheets/style.css" />
-  </head>
-  <body>
+
+<head>
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/stylesheets/normalize.css" />
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+  <header>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
-  </body>
+    <form action="/management/logout" method="POST" />
+      <input type="submit" value="ログアウト" />
+    </form>
+  </header>
+  <main>
+    <div>
+      <p>場所の名前</p>
+    </div>
+    <div>
+      <p>管理者メールアドレス</p>
+    </div>
+    <div>
+      <p>URL</p>
+      <p><a>https://</a></p>
+    </div>
+    <div>
+      <form action="/management/changePwd" method="GET" />
+        <p><input type="submit" value="パスワード変更" /></p>
+      </form>
+      <form action="/management/changePlace" method="GET" />
+        <p><input type="submit" value="場所情報を編集" /></p>
+      </form>
+      <form action="/management/display" method="GET" />
+        <p><input type="submit" value="カレンダーを表示" /></p>
+      </form>
+    </div>
+  </main>
+</body>
+
 </html>
