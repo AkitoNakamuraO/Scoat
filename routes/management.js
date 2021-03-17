@@ -3,27 +3,35 @@ var router = express.Router();
 
 //管理画面表示
 router.get("/", (req, res, next) => {
-  res.render("management", {title: "Scoat"});
+  res.render("management");
 });
 
-//ログアウト //get or post
-router.post("/logout", (req, res, next) => {
-  res.send("logout");
+//ログイン画面に遷移
+router.get("/logout", (req, res, next) => {
+  res.render("login");
 });
 
-//パスワード変更
-router.get("/changePwd", (req, res, next) => {
-  res.send("changePwd");
+//updatePasswordに遷移
+router.get("/updatePwd", (req, res, next) => {
+  res.render("updatePassword");
+});
+//パスワード変更処理
+router.post("/updatePwd", (req, res, next)=> {
+  res.redirect("/");
 });
 
-//場所情報を編集
-router.get("/changePlace", (req, res, next) => {
-  res.send("changePlace");
+//updatePlaceに遷移
+router.get("/updatePlace", (req, res, next) => {
+  res.render("updatePlace");
+});
+//場所変更処理
+router.post("/updatePlace", (req, res, next)=> {
+  res.redirect("/");
 });
 
 //カレンダー表示
-router.get("/display", (req, res, next) => {
-  res.send("display");
+router.get("/schedule", (req, res, next) => {
+  res.render("/schedule");
 });
 
 module.exports = router;

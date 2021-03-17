@@ -1,12 +1,37 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Scoat</title>
     <link rel="stylesheet" href="/stylesheets/normalize.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <header>
+      <h1>Scoat</h1>
+      <p>Welcome to Scoat</p>
+    </header>
+    <main>
+      <form action="/management" method="`POST" />
+        <div>
+          <p> 場所の名前 </p>
+          <p> 公民館 </p>
+        </div>
+        <div>
+          <p> 管理者メールアドレス </p>
+          <input type="email" name="email" />
+        </div>
+        <div>
+          <p> 管理者パスワード </p>
+          <input type="password" name="password" />
+        </div>
+        <div>
+          <p> 場所の説明 </p>
+          <input type="textarea" name="text" />
+        </div>
+          <input type="submit" value="更新"></input>
+      </div>
+    </form>
+    <a href="/management"> 戻る </a>
+    </main>
   </body>
 </html>
