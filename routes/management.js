@@ -1,9 +1,30 @@
 var express = require("express");
+var createConnection = require("../parts/connectDB");
 var router = express.Router();
+
+function getAdminData(sql, userId){
+  return new Promise( async (resolve) => {
+    var connection = await createConnection();
+    connection.connect();
+    connection.query(sql, userId, (err, results, fields) => {
+      resolve(results);
+    })
+    connection.end();
+  });
+}
 
 //管理画面表示
 router.get("/", (req, res, next) => {
   res.render("management");
+});
+//管理者データ取得
+router.get("/getData", async (req, res, next) => {
+  //※userId セッション使用してない
+  var userId = 1;
+  var sql = "SELECT * FROM admins JOIN spaces WHERE admins.admin_id = ?";
+  var admin = await getAdminData(sql, userId);
+  console.log(admin);
+  res.json(admin);
 });
 
 //ログイン画面に遷移

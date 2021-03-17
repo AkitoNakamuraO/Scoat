@@ -5,6 +5,7 @@
   <title>Scoat</title>
   <link rel="stylesheet" href="/stylesheets/normalize.css" />
   <link rel="stylesheet" href="/stylesheets/style.css" />
+  <script src="/javascripts/management.js"></script>
 </head>
 
 <body>
@@ -12,29 +13,28 @@
     <h1>Scoat</h1>
     <p>Welcome to Scoat</p>
     <form action="/management/logout" method="GET" />
-      <input type="submit" value="ログアウト" />
+    <input type="submit" value="ログアウト" />
     </form>
   </header>
   <main>
-    <div>
+    <div id="place">
       <p>場所の名前</p>
     </div>
-    <div>
+    <div id="email">
       <p>管理者メールアドレス</p>
     </div>
-    <div>
+    <div id="url">
       <p>URL</p>
-      <p><a>https://</a></p>
     </div>
     <div>
       <form action="/management/updatePwd" method="GET" />
-        <p><input type="submit" value="パスワード変更" /></p>
+      <p><input type="submit" value="パスワード変更" /></p>
       </form>
       <form action="/management/updatePlace" method="GET" />
-        <p><input type="submit" value="場所情報を編集" /></p>
+      <p><input type="submit" value="場所情報を編集" /></p>
       </form>
       <form action="/management/display" method="GET" />
-        <p><input type="submit" value="カレンダーを表示" /></p>
+      <p><input type="submit" value="カレンダーを表示" /></p>
       </form>
     </div>
   </main>
