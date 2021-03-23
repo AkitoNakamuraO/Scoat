@@ -8,5 +8,20 @@
   <body>
     <h1><%= title %></h1>
     <p>Welcome to <%= title %></p>
+    <div class="Login">
+      <form action="/login" method="POST">
+        <h2>場所の名前</h2>
+        <input type="text" name="location" placeholder="input location">
+        <h2>管理者メールアドレス</h2>
+        <input type="text" name="mail address" placeholder="abcde@xxx.com">
+        <h2>管理者パスワード</h2>
+        <input type="text" name="passwd" placeholder="＊＊＊＊＊">
+
+        <button class="loginBtn" type="submit">ログイン</button>
+        <button class="repassBtn" type="submit">パスワードを忘れた方</button>
+
+      </form>
+
+    </div>
   </body>
 </html>
