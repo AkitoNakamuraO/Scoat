@@ -4,7 +4,7 @@ module.exports = {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect("/users/login");
+    res.redirect("/admins/login");
   },
   //checkNotAuthenticated
   checkNotAuthenticated: function (req, res, next) {
