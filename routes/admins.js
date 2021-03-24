@@ -1,9 +1,9 @@
 var express = require("express");
 var router = express.Router();
-const bcrypt = require("bcryptjs");
-const passport = require("passport");
-const LocalStrategy = require("passport-local").Strategy;
-const { checkNotAuthenticated } = require("../config/auth");
+var bcrypt = require("bcryptjs");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var { checkNotAuthenticated } = require("../config/auth");
 var createConnection = require("../parts/connectDB");
 
 passport.use(
@@ -25,13 +25,28 @@ passport.use(
   )
 );
 
-function insertUser(sql, username, hashedPassword) {
+function insertPlace(sql, location, description, url) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
     connection.query(
       sql,
-      [username, hashedPassword],
+      [location, description, url],
+      function (err, rows, fields) {
+        resolve(rows);
+      }
+    );
+    connection.end();
+  });
+}
+
+function insertAdmin(sql, spaceId, mail, password) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    connection.query(
+      sql,
+      [spaceId, mail, password],
       function (err, rows, fields) {
         resolve(rows);
       }
@@ -51,17 +66,6 @@ function checkUser(sql, username) {
   });
 }
 
-function regist(sql, userId){
-  return new Promise( async (resolve) => {
-    var connection = await createConnection();
-    connection.connect();
-    connection.query(sql, userId, (err, results, fields) => {
-      resolve(results);
-    })
-    connection.end();
-  });
-}
-
 //takuya
 // login
 router.get("/login", function (req, res, next) {
@@ -76,7 +80,13 @@ router.get("/register", function (req, res, next) {
   res.render("register");
 });
 router.post("/register", function (req, res, next) {
-
+  var url = "mm"
+  var {location, mail, password, description} = req.body;
+  var sqlSpace = "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
+  var sqlAdmin = "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);"
+  insertPlace(sqlSpace, location, description, url);
+  insertAdmin(sqlAdmin, placeId, mail, password);
+  res.redirect("/register");
 });
 
 // logout
