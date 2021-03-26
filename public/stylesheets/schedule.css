@@ -1,0 +1,4 @@
+.schedules-area {
+  display: flex;
+  overflow-x: scroll;
+}
