@@ -1,4 +1,30 @@
+* {
+  box-sizing: border-box;
+}
+
 .schedules-area {
   display: flex;
   overflow-x: scroll;
+}
+
+.day {
+  /* width: 5rem; */
+}
+
+.date {
+  text-align: center;
+  background-color: blue;
+}
+
+.hour {
+  /* 仮 */
+  width: 2rem;
+  height: 1rem;
+  background-color: red;
+}
+
+.minute {
+  width: 1rem;
+  height: 0.01666666666rem;
+  background-color: green;
 }

@@ -7,26 +7,35 @@ const getSchedule = function () {
   request.open("GET", requestURL);
   request.responseType = "json";
   request.send();
-  // request.onload = function () {
-  //   const schedules = request.response;
-  //   printSchedules(schedules);
-  // };
+  request.onload = function () {
+    const schedules = request.response;
+    console.log(schedules);
+    // printSchedules(schedules);
+  };
 };
 
 // 一週間分の列を作る
 const createWeek = function (today) {
   const schedulesArea = document.getElementById("schedules-area");
   const WEEK = 7;
-  const TIME = 24;
+  const HOURS = 24;
+  const MINUTES = 60;
   for (let i = 0; i <= WEEK; i++) {
     const day = document.createElement("div");
+    day.classList.add("day");
     const date = document.createElement("div");
+    date.classList.add("date");
     date.innerHTML = today.getMonth() + 1 + "/" + today.getDate();
     const time = document.createElement("div");
-    for (let i = 0; i < TIME * 6; i++) {
-      const cell = document.createElement("div");
-      cell.innerHTML = "a";
-      time.appendChild(cell);
+    for (let i = 0; i < HOURS; i++) {
+      const hour = document.createElement("div");
+      hour.classList.add("hour");
+      for (let i = 0; i < MINUTES; i++) {
+        const minute = document.createElement("div");
+        minute.classList.add("minute");
+        hour.appendChild(minute);
+      }
+      time.appendChild(hour);
     }
     // dayに日付要素を追加
     day.appendChild(date);
