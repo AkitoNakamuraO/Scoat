@@ -7,6 +7,6 @@ html {
   font-size: 3.125vw;
 }
 
-/* PC  */
-@media screen and (min-width: 768px) {
+body {
+  height: 100vh;
 }
