@@ -5,7 +5,7 @@ const pool = mysql.createPool({
   port: 3306,
   user: "b2d3e150901925",
   password: "c6661e08",
-  database: "b2d3e150901925",
+  database: "heroku_da2d3a32efc70bc",
 });
 
 const createConnection = function () {
