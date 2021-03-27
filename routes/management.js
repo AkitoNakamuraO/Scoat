@@ -20,10 +20,10 @@ router.get("/", (req, res, next) => {
 //管理者データ取得
 router.get("/getData", async (req, res, next) => {
   //※userId セッション使用してない
-  var userId = 1;
-  var sql = "SELECT * FROM admins JOIN spaces WHERE admins.admin_id = ?";
-  var admin = await getAdminData(sql, userId);
-  console.log(admin);
+  var place = req.body.location;
+  var mail = req.body.mail;
+  var sql = "SELECT * FROM admins JOIN spaces WHERE admins.admin_email = ? AND admins.space_id = spaces.space_id";
+  var admin = await getAdminData(sql, place, mail);
   res.json(admin);
 });
 
