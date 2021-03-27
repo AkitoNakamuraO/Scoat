@@ -6,7 +6,7 @@ function getAdminData(sql, userId){
   return new Promise( async (resolve) => {
     var connection = await createConnection();
     connection.connect();
-    connection.query(sql, userId, (err, results, fields) => {
+    await connection.query(sql, userId, (err, results, fields) => {
       resolve(results);
     })
     connection.end();
@@ -20,10 +20,9 @@ router.get("/", (req, res, next) => {
 //管理者データ取得
 router.get("/getData", async (req, res, next) => {
   //※userId セッション使用してない
-  var place = req.body.location;
-  var mail = req.body.mail;
   var sql = "SELECT * FROM admins JOIN spaces WHERE admins.admin_email = ? AND admins.space_id = spaces.space_id";
-  var admin = await getAdminData(sql, place, mail);
+  var admin = await getAdminData(sql, mail);
+  // console.log(admin);
   res.json(admin);
 });
 
