@@ -3,6 +3,8 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+var passport = require("passport");
+var session = require("express-session");
 
 const indexRouter = require("./routes/index");
 const adminsRouter = require("./routes/admins");
@@ -20,6 +22,28 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+app.use(
+  session({
+    secret: "secret",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      _expires: 1000 * 60 * 5,
+    },
+  })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// // session
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+});
 
 app.use("/", indexRouter);
 app.use("/admins", adminsRouter);
