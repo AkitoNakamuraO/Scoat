@@ -3,14 +3,14 @@
 // 予定を取得
 const getSchedule = function () {
   const request = new XMLHttpRequest();
-  const requestURL = "/schedule/get-schedules/" + spaceId;
+  const requestURL = "/schedule/get-schedules";
   request.open("GET", requestURL);
   request.responseType = "json";
   request.send();
-  request.onload = function () {
-    const schedules = request.response;
-    printSchedules(schedules);
-  };
+  // request.onload = function () {
+  //   const schedules = request.response;
+  //   printSchedules(schedules);
+  // };
 };
 
 // 一週間分の列を作る
@@ -40,3 +40,4 @@ const createWeek = function (today) {
 };
 
 createWeek(new Date());
+getSchedule();
