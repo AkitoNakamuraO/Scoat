@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title>Scoat</title>
     <link rel="stylesheet" href="/stylesheets/normalize.css" />
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>Scoat</h1>
+    <p>Welcome to Scoat</p>
     <div class="Register">
-      <form action="/register" method="POST">
+      <form action="/admins/register" method="POST">
         <h2>場所の名前</h2>
         <input type="text" name="location" placeholder="input location">
         <h2>管理者メールアドレス</h2>
-        <input type="text" name="mail address" placeholder="abcde@xxx.com">
+        <input type="text" name="mail" placeholder="abcde@xxx.com">
         <h2>管理者パスワード</h2>
-        <input type="text" name="passwd" placeholder="＊＊＊＊＊">
+        <input type="text" name="password" placeholder="＊＊＊＊＊">
         <h2>場所の説明</h2>
-        <input type="text">
+        <textarea name="description" rows="4" cols="40"></textarea>
 
         <button class="registerBtn" type="submit">登録</button>
 
