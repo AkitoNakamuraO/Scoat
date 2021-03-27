@@ -117,12 +117,13 @@ router.post("/register", async function (req, res, next) {
   var placeId = result[0].space_id;
   await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
 
-  res.render("register");
+  res.redirect("/management");
 });
 
 // logout
-router.post("/", function (req, res, next) {
-
+router.get("/", function (req, res, next) {
+  req.logout();
+  res.redirect("/admins/login");
 });
 
 module.exports = router;
