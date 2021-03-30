@@ -1,14 +1,26 @@
-* {
-  box-sizing: border-box;
+.title {
+  margin: 0;
 }
 
 .schedules-area {
   display: flex;
   overflow-x: scroll;
+  overflow-y: hidden;
 }
 
+/* 時間列 */
+
+.time-column {
+  width: 3rem;
+}
+.time-line-hour {
+  height: 2rem;
+}
+
+/* 予定列 */
+
 .day {
-  /* width: 5rem; */
+  width: 4rem;
 }
 
 .date {
@@ -16,15 +28,17 @@
   background-color: blue;
 }
 
+.time {
+  width: 1rem;
+}
+
 .hour {
   /* 仮 */
-  width: 2rem;
-  height: 1rem;
-  background-color: red;
+  height: 2rem;
 }
 
 .minute {
   width: 1rem;
-  height: 0.01666666666rem;
+  height: 0.03333333333rem;
   background-color: green;
 }

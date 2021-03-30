@@ -10,7 +10,7 @@ const getSchedule = function () {
   request.onload = function () {
     const schedules = request.response;
     console.log(schedules);
-    // printSchedules(schedules);
+    printSchedules(schedules);
   };
 };
 
@@ -27,6 +27,7 @@ const createWeek = function (today) {
     date.classList.add("date");
     date.innerHTML = today.getMonth() + 1 + "/" + today.getDate();
     const time = document.createElement("div");
+    time.classList.add("time");
     for (let i = 0; i < HOURS; i++) {
       const hour = document.createElement("div");
       hour.classList.add("hour");
@@ -47,6 +48,9 @@ const createWeek = function (today) {
     today.setDate(today.getDate() + 1);
   }
 };
+
+// 予定よ表示
+const printSchedules = function (schedules) {};
 
 createWeek(new Date());
 getSchedule();
