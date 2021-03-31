@@ -9,18 +9,27 @@ const getSchedule = function () {
   request.send();
   request.onload = function () {
     const schedules = request.response;
-    console.log(schedules);
-    printSchedules(schedules);
+    createWeek(schedules);
   };
 };
 
-// 一週間分の列を作る
-const createWeek = function (today) {
+// 一週間分表示
+const createWeek = function (schedules) {
+  const today = new Date();
   const schedulesArea = document.getElementById("schedules-area");
   const WEEK = 7;
   const HOURS = 24;
   const MINUTES = 60;
-  for (let i = 0; i <= WEEK; i++) {
+  const isScheduled = function () {
+    for (let i = 0; i < schedules.length; i++) {
+      console.log(schedules[i].schedule_date);
+      // if (schedules[i].schedule_date) {
+      // }
+    }
+  };
+  isScheduled();
+
+  for (let i = 0; i < WEEK; i++) {
     const day = document.createElement("div");
     day.classList.add("day");
     const date = document.createElement("div");
@@ -34,6 +43,9 @@ const createWeek = function (today) {
       for (let i = 0; i < MINUTES; i++) {
         const minute = document.createElement("div");
         minute.classList.add("minute");
+        // if (isScheduled()) {
+        //   minute.classList.add("scheduled");
+        // }
         hour.appendChild(minute);
       }
       time.appendChild(hour);
@@ -49,8 +61,4 @@ const createWeek = function (today) {
   }
 };
 
-// 予定よ表示
-const printSchedules = function (schedules) {};
-
-createWeek(new Date());
 getSchedule();

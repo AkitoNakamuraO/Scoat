@@ -1,7 +1,6 @@
 .title {
   margin: 0;
 }
-
 .schedules-area {
   display: flex;
   overflow-x: scroll;
@@ -22,23 +21,21 @@
 .day {
   width: 4rem;
 }
-
 .date {
   text-align: center;
   background-color: blue;
 }
-
 .time {
   width: 1rem;
 }
-
 .hour {
   /* 仮 */
   height: 2rem;
 }
-
 .minute {
   width: 1rem;
   height: 0.03333333333rem;
+}
+.scheduled {
   background-color: green;
 }
