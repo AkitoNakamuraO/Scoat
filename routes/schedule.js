@@ -36,6 +36,7 @@ router.get("/space/:id", function (req, res, next) {
 
 // スケジュール情報を取得
 router.get("/get-schedules", async function (req, res, next) {
+  // 拓也が作るところ
   const spaceId = req.session.spaceId;
   const sql = "SELECT * FROM schedules WHERE space_id = ?";
   const schedules = await getSchedules(sql, spaceId);
