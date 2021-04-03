@@ -10,6 +10,7 @@ const getSchedule = function () {
   request.onload = function () {
     const schedules = request.response;
     createWeek(schedules);
+    console.log(schedules);
   };
 };
 
@@ -27,7 +28,6 @@ const createWeek = function (schedules) {
       // }
     }
   };
-  isScheduled();
 
   for (let i = 0; i < WEEK; i++) {
     const day = document.createElement("div");
