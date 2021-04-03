@@ -1,6 +1,15 @@
 var express = require("express");
 var router = express.Router();
 const createConnection = require("../parts/connectDB");
+const moment = require("moment");
+
+function dateFormat(date, format){
+  format = format.replace(/YYYY/, date.getFullYear());
+  format = format.replace(/MM/, date.getMonth() + 1);
+  format = format.replace(/DD/, date.getDate());
+
+    return format;
+}
 
 const getSchedules = function (sql, spaceId) {
   return new Promise(async (resolve) => {
@@ -37,9 +46,14 @@ router.get("/space/:id", function (req, res, next) {
 // スケジュール情報を取得
 router.get("/get-schedules", async function (req, res, next) {
   // 拓也が作るところ
+  var today = moment().format("YYYY-MM-DD");
+  var weekend = today.add(7,"days").format("YYYY-MM-DD");
   const spaceId = req.session.spaceId;
-  const sql = "SELECT * FROM schedules WHERE space_id = ?";
+  const sql = `SELECT * FROM schedules WHERE space_id = ? AND schedule_date BETWEEN ${today} AND ${weekend}`;
   const schedules = await getSchedules(sql, spaceId);
+  for(var ){
+    
+  }
   res.json(schedules);
 });
 
