@@ -8,57 +8,80 @@ const getSchedule = function () {
   request.responseType = "json";
   request.send();
   request.onload = function () {
-    const schedules = request.response;
+    // const schedules = request.response;
+    const schedules = [
+      [
+        [0, 0, 3, 30],
+        [3, 30, 5, 50],
+        [0, 0, 3, 30],
+        [3, 30, 5, 50],
+        [0, 0, 3, 30],
+        [3, 30, 5, 50],
+        [0, 0, 3, 30],
+        [3, 30, 5, 50],
+      ],
+      [
+        [5, 50, 18, 40],
+        [18, 40, 21, 0],
+      ],
+    ];
     createWeek(schedules);
   };
 };
 
-// 一週間分表示
+// 一週間分の予定を表示
 const createWeek = function (schedules) {
-  const today = new Date();
-  const schedulesArea = document.getElementById("schedules-area");
-  const WEEK = 7;
-  const HOURS = 24;
-  const MINUTES = 60;
-  const isScheduled = function () {
-    for (let i = 0; i < schedules.length; i++) {
-      console.log(schedules[i].schedule_date);
-      // if (schedules[i].schedule_date) {
-      // }
-    }
-  };
-  isScheduled();
+  let hourFlag = false; // 予定があるかを判断するためのフラグ（時間）
+  let minuteFlag = false; // 予定があるかを判断するためのフラグ（分）
+  const WEEK = schedules.length; //一週間分
+  const HOURS = 24; //時間
+  const MINUTES = 60; //分
 
+  const schedulesArea = document.getElementById("schedules-area");
   for (let i = 0; i < WEEK; i++) {
     const day = document.createElement("div");
     day.classList.add("day");
     const date = document.createElement("div");
     date.classList.add("date");
-    date.innerHTML = today.getMonth() + 1 + "/" + today.getDate();
-    const time = document.createElement("div");
-    time.classList.add("time");
-    for (let i = 0; i < HOURS; i++) {
-      const hour = document.createElement("div");
-      hour.classList.add("hour");
-      for (let i = 0; i < MINUTES; i++) {
-        const minute = document.createElement("div");
-        minute.classList.add("minute");
-        // if (isScheduled()) {
-        //   minute.classList.add("scheduled");
-        // }
-        hour.appendChild(minute);
+    date.innerHTML = "4/1";
+    const times = document.createElement("div");
+    times.classList.add("times");
+    for (let j = 0; j < schedules[i].length; j++) {
+      const time = document.createElement("div");
+      time.classList.add("time");
+      for (let k = 0; k < HOURS; k++) {
+        const hour = document.createElement("div");
+        hour.classList.add("hour");
+        if (k === schedules[i][j][0]) {
+          hourFlag = true;
+        } else if (k === schedules[i][j][2]) {
+          hourFlag = false;
+        }
+        for (let l = 0; l < MINUTES; l++) {
+          const minute = document.createElement("div");
+          minute.classList.add("minute");
+          if (hourFlag === true && l === schedules[i][j][1]) {
+            minuteFlag = true;
+          } else if (hourFlag === false && l === schedules[i][j][3]) {
+            minuteFlag = false;
+          }
+          if (minuteFlag === true) {
+            minute.classList.add("scheduled");
+          }
+          hour.appendChild(minute);
+        }
+        time.appendChild(hour);
       }
-      time.appendChild(hour);
+      times.appendChild(time);
     }
     // dayに日付要素を追加
     day.appendChild(date);
     // dayに時間要素を追加する
-    day.appendChild(time);
+    day.appendChild(times);
     // 一日分をスケジュールエリアに追加する
     schedulesArea.appendChild(day);
-    // 次の日に設定する
-    today.setDate(today.getDate() + 1);
   }
 };
 
+// 予定取得関数を実行
 getSchedule();

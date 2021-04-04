@@ -19,21 +19,20 @@
 /* 予定列 */
 
 .day {
-  width: 4rem;
 }
 .date {
   text-align: center;
-  background-color: blue;
+}
+.times {
+  display: flex;
 }
 .time {
-  width: 1rem;
+  width: 0.5rem;
 }
 .hour {
-  /* 仮 */
-  height: 2rem;
 }
 .minute {
-  width: 1rem;
+  width: 0.5rem;
   height: 0.03333333333rem;
 }
 .scheduled {
