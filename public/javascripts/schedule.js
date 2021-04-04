@@ -11,18 +11,54 @@ const getSchedule = function () {
     // const schedules = request.response;
     const schedules = [
       [
-        [0, 0, 3, 30],
-        [3, 30, 5, 50],
-        [0, 0, 3, 30],
-        [3, 30, 5, 50],
-        [0, 0, 3, 30],
-        [3, 30, 5, 50],
-        [0, 0, 3, 30],
-        [3, 30, 5, 50],
+        [0, 0, 3, 30, 1],
+        [3, 30, 5, 50, 2],
+        [14, 0, 18, 30, 3],
+        [20, 30, 23, 50, 4],
+        [0, 0, 3, 30, 5],
+        [3, 30, 5, 50, 6],
+        [0, 0, 3, 30, 7],
+        [3, 30, 5, 50, 8],
       ],
       [
-        [5, 50, 18, 40],
-        [18, 40, 21, 0],
+        [0, 0, 3, 30, 1],
+        [3, 30, 5, 50, 2],
+        [14, 0, 18, 30, 3],
+        [20, 30, 23, 50, 4],
+        [0, 0, 3, 30, 5],
+        [3, 30, 5, 50, 6],
+        [0, 0, 3, 30, 7],
+        [3, 30, 5, 50, 8],
+      ],
+      [
+        [0, 0, 3, 30, 1],
+        [3, 30, 5, 50, 2],
+        [14, 0, 18, 30, 3],
+        [20, 30, 23, 50, 4],
+        [0, 0, 3, 30, 5],
+        [3, 30, 5, 50, 6],
+        [0, 0, 3, 30, 7],
+        [3, 30, 5, 50, 8],
+      ],
+      [
+        [0, 0, 3, 30, 1],
+        [3, 30, 5, 50, 2],
+        [14, 0, 18, 30, 3],
+        [20, 30, 23, 50, 4],
+        [0, 0, 3, 30, 5],
+        [3, 30, 5, 50, 6],
+        [0, 0, 3, 30, 7],
+        [3, 30, 5, 50, 8],
+      ],
+      [
+        [0, 0, 3, 30, 1],
+        [3, 30, 5, 50, 2],
+        [14, 0, 18, 30, 3],
+        [20, 30, 23, 50, 4],
+        [0, 0, 3, 30, 5],
+        [3, 30, 5, 50, 6],
+        [0, 0, 3, 30, 7],
+        [3, 30, 5, 50, 8],
       ],
     ];
     createWeek(schedules);
@@ -37,12 +73,13 @@ const createWeek = function (schedules) {
   const HOURS = 24; //時間
   const MINUTES = 60; //分
 
-  const schedulesArea = document.getElementById("schedules-area");
+  const schedulesColumn = document.getElementById("schedules-column");
   for (let i = 0; i < WEEK; i++) {
     const day = document.createElement("div");
     day.classList.add("day");
     const date = document.createElement("div");
     date.classList.add("date");
+    date.classList.add("table-header");
     date.innerHTML = "4/1";
     const times = document.createElement("div");
     times.classList.add("times");
@@ -67,6 +104,8 @@ const createWeek = function (schedules) {
           }
           if (minuteFlag === true) {
             minute.classList.add("scheduled");
+            const scheduleId = schedules[i][j][4]; // schedule_idをつける
+            minute.setAttribute("onclick", `displayDetails(${scheduleId})`);
           }
           hour.appendChild(minute);
         }
@@ -79,9 +118,24 @@ const createWeek = function (schedules) {
     // dayに時間要素を追加する
     day.appendChild(times);
     // 一日分をスケジュールエリアに追加する
-    schedulesArea.appendChild(day);
+    schedulesColumn.appendChild(day);
   }
 };
 
 // 予定取得関数を実行
 getSchedule();
+
+// タップされた予定の詳細表示
+const displayDetails = function (scheduleId) {
+  const scheduleDetails = document.getElementById("schedule-details");
+  scheduleDetails.classList.remove("display-none");
+};
+
+// 予定詳細の処理
+const goBackBtn = document.getElementById("go-back");
+goBackBtn.addEventListener("click", function () {
+  const scheduleDetails = document.getElementById("schedule-details");
+  scheduleDetails.classList.add("display-none");
+});
+
+// 予定の更新ボタン

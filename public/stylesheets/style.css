@@ -1,8 +1,13 @@
 /* スマホ */
 :root {
-  --main-color: white;
+  --base-color: white;
+  --border-color: black;
 }
 
 html {
   font-size: 3.125vw;
+}
+
+* {
+  box-sizing: border-box;
 }
