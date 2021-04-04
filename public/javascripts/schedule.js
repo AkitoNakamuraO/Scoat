@@ -8,60 +8,8 @@ const getSchedule = function () {
   request.responseType = "json";
   request.send();
   request.onload = function () {
-    console.log(request.response);
-    // const schedules = request.response;
-    const schedules = [
-      [
-        [0, 0, 3, 30, 1],
-        [3, 30, 5, 50, 2],
-        [14, 0, 18, 30, 3],
-        [20, 30, 23, 50, 4],
-        [0, 0, 3, 30, 5],
-        [3, 30, 5, 50, 6],
-        [0, 0, 3, 30, 7],
-        [3, 30, 5, 50, 8],
-      ],
-      [
-        [0, 0, 3, 30, 1],
-        [3, 30, 5, 50, 2],
-        [14, 0, 18, 30, 3],
-        [20, 30, 23, 50, 4],
-        [0, 0, 3, 30, 5],
-        [3, 30, 5, 50, 6],
-        [0, 0, 3, 30, 7],
-        [3, 30, 5, 50, 8],
-      ],
-      [
-        [0, 0, 3, 30, 1],
-        [3, 30, 5, 50, 2],
-        [14, 0, 18, 30, 3],
-        [20, 30, 23, 50, 4],
-        [0, 0, 3, 30, 5],
-        [3, 30, 5, 50, 6],
-        [0, 0, 3, 30, 7],
-        [3, 30, 5, 50, 8],
-      ],
-      [
-        [0, 0, 3, 30, 1],
-        [3, 30, 5, 50, 2],
-        [14, 0, 18, 30, 3],
-        [20, 30, 23, 50, 4],
-        [0, 0, 3, 30, 5],
-        [3, 30, 5, 50, 6],
-        [0, 0, 3, 30, 7],
-        [3, 30, 5, 50, 8],
-      ],
-      [
-        [0, 0, 3, 30, 1],
-        [3, 30, 5, 50, 2],
-        [14, 0, 18, 30, 3],
-        [20, 30, 23, 50, 4],
-        [0, 0, 3, 30, 5],
-        [3, 30, 5, 50, 6],
-        [0, 0, 3, 30, 7],
-        [3, 30, 5, 50, 8],
-      ],
-    ];
+    const schedules = request.response;
+    console.log(schedules);
     createWeek(schedules);
   };
 };
@@ -81,31 +29,31 @@ const createWeek = function (schedules) {
     const date = document.createElement("div");
     date.classList.add("date");
     date.classList.add("table-header");
-    date.innerHTML = "4/1";
     const times = document.createElement("div");
     times.classList.add("times");
     for (let j = 0; j < schedules[i].length; j++) {
+      date.innerHTML = schedules[i][j].date;
       const time = document.createElement("div");
       time.classList.add("time");
       for (let k = 0; k < HOURS; k++) {
         const hour = document.createElement("div");
         hour.classList.add("hour");
-        if (k === schedules[i][j][0]) {
+        if (k == schedules[i][j].startHour) {
           hourFlag = true;
-        } else if (k === schedules[i][j][2]) {
+        } else if (k == schedules[i][j].endHour) {
           hourFlag = false;
         }
         for (let l = 0; l < MINUTES; l++) {
           const minute = document.createElement("div");
           minute.classList.add("minute");
-          if (hourFlag === true && l === schedules[i][j][1]) {
+          if (hourFlag == true && l == schedules[i][j].startMinute) {
             minuteFlag = true;
-          } else if (hourFlag === false && l === schedules[i][j][3]) {
+          } else if (hourFlag == false && l == schedules[i][j].endMinute) {
             minuteFlag = false;
           }
-          if (minuteFlag === true) {
+          if (minuteFlag == true) {
             minute.classList.add("scheduled");
-            const scheduleId = schedules[i][j][4]; // schedule_idをつける
+            const scheduleId = schedules[i][j].id; // schedule_idをつける
             minute.setAttribute("onclick", `displayDetails(${scheduleId})`);
           }
           hour.appendChild(minute);

@@ -74,7 +74,7 @@ router.get("/get-schedules", async function (req, res, next) {
       if (today.isSame(between[j].schedule_date, "days")) {
         reschedules[i][j].id = between[j].schedule_id;
         reschedules[i][j].date = moment(between[j].schedule_date).format(
-          "YYYY/MM/DD"
+          "MM/DD"
         );
         reschedules[i][j].startHour = between[j].schedule_start_time.substr(
           0,
