@@ -1,41 +1,73 @@
-.title {
-  margin: 0;
+:root {
+  --hour-height: 2rem;
+  --time-width: 1.5rem;
+  --margin-large: 1rem;
+  --margin-small: 0.5rem;
+  --padding-large: 1rem;
+  --padding-small: 0.5rem;
 }
 .schedules-area {
   display: flex;
-  overflow-x: scroll;
-  overflow-y: hidden;
+}
+.table-header {
+  padding: var(--padding-small);
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1.5rem;
+  text-align: center;
+}
+.display-none {
+  display: none;
 }
 
 /* 時間列 */
-
 .time-column {
-  width: 3rem;
+  width: 20vw;
+  border: 1px solid var(--border-color);
 }
-.time-line-hour {
-  height: 2rem;
+.hour-content {
+  display: inline-block;
+  position: relative;
+  top: -0.7rem;
+  background-color: var(--base-color);
+  font-size: 1.2rem;
+  padding: 0 var(--padding-small) 0 var(--margin-large);
 }
 
 /* 予定列 */
-
-.day {
-  width: 4rem;
+.schedules-column {
+  width: 80vw;
+  display: flex;
+  overflow-x: scroll;
 }
-.date {
-  text-align: center;
-  background-color: blue;
+.day {
+  border: 1px solid var(--border-color);
+}
+.times {
+  display: flex;
 }
 .time {
-  width: 1rem;
+  width: var(--time-width);
 }
 .hour {
-  /* 仮 */
-  height: 2rem;
+  height: var(--hour-height);
+  border-bottom: 1px solid var(--border-color);
 }
 .minute {
-  width: 1rem;
-  height: 0.03333333333rem;
+  width: var(--time-width);
+  height: calc(var(--hour-height) / 60);
 }
 .scheduled {
   background-color: green;
+}
+
+/* 予定詳細 */
+.schedule-details {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90vw;
+  height: 50vh;
+  background-color: var(--base-color);
+  border: 1px solid var(--border-color);
 }
