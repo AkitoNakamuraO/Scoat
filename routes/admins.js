@@ -79,11 +79,15 @@ function checkUser(sql, username) {
 
 // login
 router.get("/login", function (req, res, next) {
-  res.render("login");
+  res.render("login", {locatonErrors: [], mailErrors: [], passErrors: []});
 });
 router.post(
   "/login",
   function (req, res, next) {
+    const locationErrors = [];
+    const mailErrors = [];
+    const passErrors = [];
+    
     if (req.body.location.length <= 0 || req.body.mail.length <= 0 || req.body.password.length <= 0) {
       return res.redirect("/");
     }
