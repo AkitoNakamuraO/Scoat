@@ -8,6 +8,7 @@
   <body>
     <h1>Scoat</h1>
     <p>Welcome to Scoat</p>
+    <%- include("login_error",{locationErrors: locationErrors, mailErrors: mailErrors, passErrors:passErrors}); %>
     <div class="Login">
       <form action="/admins/login" method="POST">
         <h2>場所の名前</h2>

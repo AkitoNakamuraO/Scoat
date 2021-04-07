@@ -5,6 +5,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var { checkNotAuthenticated } = require("../parts/auth");
 var createConnection = require("../parts/connectDB");
+const { isEmpty, isCorrect, isUnique } = require("../parts/config_error");
 
 passport.use(
   new LocalStrategy(
@@ -79,19 +80,15 @@ function checkUser(sql, username) {
 
 // login
 router.get("/login", function (req, res, next) {
-  res.render("login", {locatonErrors: [], mailErrors: [], passErrors: []});
+  res.render("login", { locatonErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
   "/login",
   function (req, res, next) {
-    const locationErrors = [];
-    const mailErrors = [];
-    const passErrors = [];
-    
-    if (req.body.location.length <= 0 || req.body.mail.length <= 0 || req.body.password.length <= 0) {
-      return res.redirect("/");
-    }
-    next();
+    isEmpty(req, res, next);
+  },
+  function (req, res, next) {
+    isCorrect(req, res, next);
   },
   passport.authenticate("local", {
     successRedirect: "/management",
@@ -102,27 +99,39 @@ router.post(
 
 // register
 router.get("/register", function (req, res, next) {
-  res.render("register");
+  res.render("register", {locationErrors: [], mailErrors:[], passErrors:[]});
 });
-router.post("/register", async function (req, res, next) {
-  var url = "mm";
-  var { location, mail, password, description } = req.body;
-  var hashedPassword = await bcrypt.hash(password, 10);
+router.post(
+  "/register",
+  function (req, res, next) {
+    isEmpty(req, res, next);
+  },
+  function (req, res, next) {
+    isCorrect(req, res, next);
+  },
+  function (req, res, next) {
+    isUnique(req, res, next);
+  },
+  async function (req, res, next) {
+    var url = "mm";
+    var { location, mail, password, description } = req.body;
+    var hashedPassword = await bcrypt.hash(password, 10);
 
-  var sqlSpace1 =
-    "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
-  var sqlSpace2 =
-    "SELECT * FROM spaces WHERE space_name = ? AND space_url = ?;";
-  var sqlAdmin =
-    "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
+    var sqlSpace1 =
+      "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
+    var sqlSpace2 =
+      "SELECT * FROM spaces WHERE space_name = ? AND space_url = ?;";
+    var sqlAdmin =
+      "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
 
-  await insertPlace(sqlSpace1, location, description, url);
-  var result = await selectPlace(sqlSpace2, location, url);
-  var placeId = result[0].space_id;
-  await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
+    await insertPlace(sqlSpace1, location, description, url);
+    var result = await selectPlace(sqlSpace2, location, url);
+    var placeId = result[0].space_id;
+    await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
 
-  res.redirect("/management");
-});
+    res.redirect("/management");
+  }
+);
 
 // logout
 router.get("/", function (req, res, next) {

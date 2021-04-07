@@ -1,18 +1,12 @@
-<% if(usernameErrors.length > 0){ %>
-<ul>
-  <% usernameErrors.forEach((error) => {%>
-  <li><%= error %></li>
-</ul>
-<% }); %>
-<% if(usernameErrors.length > 0){ %>
-<ul>
-  <% usernameErrors.forEach((error) => {%>
-  <li><%= error %></li>
-</ul>
-<% }); %>
-<% if(usernameErrors.length > 0){ %>
-<ul>
-  <% usernameErrors.forEach((error) => {%>
-  <li><%= error %></li>
-</ul>
-<% }); %>
+<% if(locationErrors.length > 0){ %>
+  <% locationErrors.forEach((error) => {%>
+  <li style="list-style-type:none"><%= error %></li>
+<% })}; %>
+<% if(mailErrors.length > 0){ %>
+  <% mailErrors.forEach((error) => {%>
+  <li style="list-style-type:none"><%= error %></li>
+<% })}; %>
+<% if(passErrors.length > 0){ %>
+  <% passErrors.forEach((error) => {%>
+  <li style="list-style-type:none"><%= error %></li>
+<% })}; %>
