@@ -26,13 +26,9 @@ const registerSchedules = function (sql, spaceId, date, start, end, contents) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
-    connection.query(
-      sql,
-      [spaceId, date, start, end, contents],
-      function (err, rows, fields) {
-        resolve(rows);
-      }
-    );
+    connection.query(sql, [spaceId, date, start, end, contents], function (err, rows, fields) {
+      resolve(rows);
+    });
     connection.end();
   });
 };
@@ -45,21 +41,18 @@ router.get("/space/:id", function (req, res, next) {
 
 // スケジュール情報を取得
 router.get("/get-schedules", async function (req, res, next) {
+  const spaceId = req.session.spaceId;
   const reschedules = [];
   const today = moment();
   const weekend = today.clone().add(7, "days");
   const between = [];
-  const spaceId = req.session.spaceId;
   const sql = `SELECT * FROM schedules WHERE space_id = ?`;
   const schedules = await getSchedules(sql, spaceId);
 
   let j = 0;
   let i = 0;
   for (i = 0; i < schedules.length; i++) {
-    if (
-      today.isSameOrBefore(schedules[i].schedule_date) &&
-      weekend.isSameOrAfter(schedules[i].schedule_date)
-    ) {
+    if (today.isSameOrBefore(schedules[i].schedule_date, "days") && weekend.isSameOrAfter(schedules[i].schedule_date, "days")) {
       between[j] = schedules[i];
       j++;
     }
@@ -67,28 +60,21 @@ router.get("/get-schedules", async function (req, res, next) {
 
   for (i = 0; i < 7; i++) {
     reschedules[i] = [];
-    today.add(1, "days");
-    for (j = 0; ; j++) {
-      if (between[j] == null) break;
-      reschedules[i][j] = {};
+    let count = 0;
+    for (j = 0; j < between.length; j++) {
       if (today.isSame(between[j].schedule_date, "days")) {
-        reschedules[i][j].id = between[j].schedule_id;
-        reschedules[i][j].date = moment(between[j].schedule_date).format(
-          "MM/DD"
-        );
-        reschedules[i][j].startHour = between[j].schedule_start_time.substr(
-          0,
-          2
-        );
-        reschedules[i][j].endHour = between[j].schedule_end_time.substr(0, 2);
-        reschedules[i][j].startMinute = between[j].schedule_start_time.substr(
-          3,
-          2
-        );
-        reschedules[i][j].endMinute = between[j].schedule_end_time.substr(3, 2);
-        reschedules[i][j].content = between[j].schedule_contents;
+        reschedules[i][count] = {};
+        reschedules[i][count].id = between[j].schedule_id;
+        reschedules[i][count].date = moment(between[j].schedule_date).format("MM/DD");
+        reschedules[i][count].startHour = between[j].schedule_start_time.substr(0, 2);
+        reschedules[i][count].endHour = between[j].schedule_end_time.substr(0, 2);
+        reschedules[i][count].startMinute = between[j].schedule_start_time.substr(3, 2);
+        reschedules[i][count].endMinute = between[j].schedule_end_time.substr(3, 2);
+        reschedules[i][count].content = between[j].schedule_contents;
+        count++;
       }
     }
+    today.add(1, "days");
   }
   console.log(reschedules);
   res.json(reschedules);
@@ -101,10 +87,9 @@ router.get("/register", function (req, res, next) {
 router.post("/register", async function (req, res, next) {
   const { date, start, end, contents } = req.body;
   const spaceId = 1;
-  const sql =
-    "INSERT INTO schedules(space_id, schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?, ?);";
+  const sql = "INSERT INTO schedules(space_id, schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?, ?);";
   await registerSchedules(sql, spaceId, date, start, end, contents);
-  res.render("registerSchedule");
+  res.redirect("space/1");
 });
 
 // 予定更新

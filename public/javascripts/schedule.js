@@ -18,6 +18,7 @@ const getSchedule = function () {
 const createWeek = function (schedules) {
   let hourFlag = false; // 予定があるかを判断するためのフラグ（時間）
   let minuteFlag = false; // 予定があるかを判断するためのフラグ（分）
+  const today = new Date();
   const WEEK = schedules.length; //一週間分
   const HOURS = 24; //時間
   const MINUTES = 60; //分
@@ -29,27 +30,34 @@ const createWeek = function (schedules) {
     const date = document.createElement("div");
     date.classList.add("date");
     date.classList.add("table-header");
+    date.innerHTML = today.getMonth() + "/" + today.getDate();
     const times = document.createElement("div");
     times.classList.add("times");
-    for (let j = 0; j < schedules[i].length; j++) {
-      date.innerHTML = schedules[i][j].date;
+    let j = 0;
+    while (true) {
+      if (j > 3 && schedules[i].length <= 3) break;
+      if (j > 3 && j == schedules[i].length) break;
       const time = document.createElement("div");
       time.classList.add("time");
       for (let k = 0; k < HOURS; k++) {
         const hour = document.createElement("div");
         hour.classList.add("hour");
-        if (k == schedules[i][j].startHour) {
-          hourFlag = true;
-        } else if (k == schedules[i][j].endHour) {
-          hourFlag = false;
+        if (schedules[i][j] != undefined) {
+          if (k == schedules[i][j].startHour) {
+            hourFlag = true;
+          } else if (k == schedules[i][j].endHour) {
+            hourFlag = false;
+          }
         }
         for (let l = 0; l < MINUTES; l++) {
           const minute = document.createElement("div");
           minute.classList.add("minute");
-          if (hourFlag == true && l == schedules[i][j].startMinute) {
-            minuteFlag = true;
-          } else if (hourFlag == false && l == schedules[i][j].endMinute) {
-            minuteFlag = false;
+          if (schedules[i][j] != undefined) {
+            if (hourFlag == true && l == schedules[i][j].startMinute) {
+              minuteFlag = true;
+            } else if (hourFlag == false && l == schedules[i][j].endMinute) {
+              minuteFlag = false;
+            }
           }
           if (minuteFlag == true) {
             minute.classList.add("scheduled");
@@ -61,6 +69,7 @@ const createWeek = function (schedules) {
         time.appendChild(hour);
       }
       times.appendChild(time);
+      j++;
     }
     // dayに日付要素を追加
     day.appendChild(date);
@@ -68,6 +77,8 @@ const createWeek = function (schedules) {
     day.appendChild(times);
     // 一日分をスケジュールエリアに追加する
     schedulesColumn.appendChild(day);
+    // 次の日に設定
+    today.setDate(today.getDate() + 1);
   }
 };
 
