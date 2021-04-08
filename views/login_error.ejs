@@ -1,12 +1,23 @@
-<% if(locationErrors.length > 0){ %>
+<% if(locationErrors.length > 0 || mailErrors.length > 0 || passErrors.length > 0){ %>
+<ul style="list-style-type:none">
+  
+  <!-- locationエラー -->
+  <% if(locationErrors.length > 0){ %>
   <% locationErrors.forEach((error) => {%>
-  <li style="list-style-type:none"><%= error %></li>
-<% })}; %>
-<% if(mailErrors.length > 0){ %>
+  <li><%= error %></li>
+  <% })}; %>
+
+  <!-- mailエラー -->
+  <% if(mailErrors.length > 0){ %>
   <% mailErrors.forEach((error) => {%>
-  <li style="list-style-type:none"><%= error %></li>
-<% })}; %>
-<% if(passErrors.length > 0){ %>
+  <li><%= error %></li>
+  <% })}; %>
+
+  <!-- passwordエラー -->
+  <% if(passErrors.length > 0){ %>
   <% passErrors.forEach((error) => {%>
-  <li style="list-style-type:none"><%= error %></li>
-<% })}; %>
+  <li><%= error %></li>
+  <% })}; %>
+
+</ul>
+<% } %>

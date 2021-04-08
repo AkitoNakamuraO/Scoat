@@ -54,9 +54,11 @@ async function isUnique(req, res, next){
   const sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email = ?";
   const data = await checkData(sql, mail);
   var i,count=0;
+
   for(i=0;i<data.length;i++){
     if(location == data[i].space_name) count++;
   }
+
   if(count >= 2) {
     mailErrors.push("場所が重複しています。");
     mailErrors.push("(※)1つのメールに複数の同じ名前の場所は登録できません。");

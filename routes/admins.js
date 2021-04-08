@@ -80,7 +80,7 @@ function checkUser(sql, username) {
 
 // login
 router.get("/login", function (req, res, next) {
-  res.render("login", { locatonErrors: [], mailErrors: [], passErrors: [] });
+  res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
   "/login",
