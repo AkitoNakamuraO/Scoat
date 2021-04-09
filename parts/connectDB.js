@@ -6,6 +6,7 @@ const pool = mysql.createPool({
   user: "b2d3e150901925",
   password: "c6661e08",
   database: "heroku_da2d3a32efc70bc",
+  timezone: 'jst'
 });
 
 const createConnection = function () {
