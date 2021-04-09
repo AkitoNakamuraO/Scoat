@@ -36,6 +36,7 @@ router.get("/getData", async (req, res, next) => {
   console.log(location);
   var sql = "SELECT * FROM admins JOIN spaces WHERE spaces.space_name = ? AND admins.admin_email = ? AND admins.space_id = spaces.space_id";
   var admin = await getAdminData(sql, location, mail);
+  req.session.spaceId = admin[0].space_id;
   console.log(admin);
   res.json(admin);
 });
@@ -68,8 +69,9 @@ router.post("/updatePlace", (req, res, next)=> {
 });
 
 //カレンダー表示
-router.get("/schedule", (req, res, next) => {
-  res.render("/schedule");
+router.get("/display", (req, res, next) => {
+  const spaceId = req.session.spaceId;
+  res.redirect("/schedule/space/spaceId");
 });
 
 module.exports = router;
