@@ -56,14 +56,14 @@ async function isUnique(req, res, next){
   var i,count=0;
 
   for(i=0;i<data.length;i++){
-    if(location == data[i].space_name) count++;
+    if(location == data[i].space_name){
+      mailErrors.push("場所が重複しています。");
+      mailErrors.push("(※)1つのメールに複数の同じ名前の場所は登録できません。");
+      mailErrors.join("\n");
+      break;
+    }
   }
 
-  if(count >= 2) {
-    mailErrors.push("場所が重複しています。");
-    mailErrors.push("(※)1つのメールに複数の同じ名前の場所は登録できません。");
-    mailErrors.join("\n");
-  }
   if(mailErrors.length > 0) res.render("register", {locationErrors: [], mailErrors: mailErrors, passErrors: []});
   else next();
 }
