@@ -109,17 +109,17 @@ router.post(
     isUnique(req, res, next);
   },
   async function (req, res, next) {
-    var url = "mm";
-    var { location, mail, password, description } = req.body;
-    var hashedPassword = await bcrypt.hash(password, 10);
+    const url = "mm";
+    const { location, mail, password, description } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    var sqlSpace1 = "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
-    var sqlSpace2 = "SELECT * FROM spaces WHERE space_name = ? AND space_url = ?;";
-    var sqlAdmin = "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
+    const sqlSpace1 = "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
+    const sqlSpace2 = "SELECT * FROM spaces WHERE space_name = ? AND space_url = ?;";
+    const sqlAdmin = "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
 
     await insertPlace(sqlSpace1, location, description, url);
-    var result = await selectPlace(sqlSpace2, location, url);
-    var placeId = result[0].space_id;
+    const result = await selectPlace(sqlSpace2, location, url);
+    const placeId = result[0].space_id;
     await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
 
     res.redirect("/management");
