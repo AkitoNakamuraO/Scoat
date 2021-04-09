@@ -3,11 +3,11 @@ var createConnection = require("../parts/connectDB");
 var router = express.Router();
 var { checkNotAuthenticated } = require("../parts/auth");
 
-function getAdminData(sql, userId){
+function getAdminData(sql, location, mail){
   return new Promise( async (resolve) => {
     var connection = await createConnection();
     connection.connect();
-    await connection.query(sql, userId, (err, results, fields) => {
+    await connection.query(sql, [location, mail], (err, results, fields) => {
       resolve(results);
     })
     connection.end();
@@ -32,8 +32,11 @@ router.get("/", (req, res, next) => {
 //管理者データ取得
 router.get("/getData", async (req, res, next) => {
   var mail = req.session.mail;
-  var sql = "SELECT * FROM admins JOIN spaces WHERE admins.admin_email = ? AND admins.space_id = spaces.space_id";
-  var admin = await getAdminData(sql, mail);
+  const location = req.session.location;
+  console.log(location);
+  var sql = "SELECT * FROM admins JOIN spaces WHERE spaces.space_name = ? AND admins.admin_email = ? AND admins.space_id = spaces.space_id";
+  var admin = await getAdminData(sql, location, mail);
+  console.log(admin);
   res.json(admin);
 });
 

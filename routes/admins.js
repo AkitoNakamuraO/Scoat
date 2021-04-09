@@ -88,6 +88,7 @@ router.post(
       return res.redirect("/");
     }
     req.session.mail = req.body.mail;
+    req.session.location = req.body.location;
     next();
   },
   passport.authenticate("local", {
@@ -95,16 +96,17 @@ router.post(
     failureRedirect: "/admins/login",
     failureFlash: true,
   })
-);
-
-// register
-router.get("/register", function (req, res, next) {
-  res.render("register");
-});
-router.post("/register", async function (req, res, next) {
-  var { location, mail, password, description } = req.body;
-  req.session.mail = req.body.mail;
-  var url = location;
+  );
+  
+  // register
+  router.get("/register", function (req, res, next) {
+    res.render("register");
+  });
+  router.post("/register", async function (req, res, next) {
+    var { location, mail, password, description } = req.body;
+    req.session.mail = mail;
+    req.session.location = location;
+    var url = location;
   var hashedPassword = await bcrypt.hash(password, 10);
   req.session.password = hashedPassword;
   var sqlSpace1 =
