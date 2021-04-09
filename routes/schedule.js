@@ -76,7 +76,6 @@ router.get("/get-schedules", async function (req, res, next) {
     }
     today.add(1, "days");
   }
-  console.log(reschedules);
   res.json(reschedules);
 });
 
@@ -86,14 +85,23 @@ router.get("/register", function (req, res, next) {
 });
 router.post("/register", async function (req, res, next) {
   const { date, start, end, contents } = req.body;
-  const spaceId = 1;
+  const spaceId = req.session.spaceId;
+  if (date.length <= 0 || start.length <= 0 || end.length <= 0 || contents.length <= 0) {
+    res.redirect("register");
+  }
   const sql = "INSERT INTO schedules(space_id, schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?, ?);";
   await registerSchedules(sql, spaceId, date, start, end, contents);
-  res.redirect("space/1");
+  res.redirect("space/" + spaceId);
 });
 
 // 予定更新
 router.get("/update", function (req, res, next) {});
 router.post("/update", function (req, res, next) {});
+
+// 戻るボタン
+router.post("/return-schedules", function (req, res, next) {
+  const spaceId = req.session.spaceId;
+  res.redirect("space/" + spaceId);
+});
 
 module.exports = router;

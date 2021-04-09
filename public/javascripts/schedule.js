@@ -1,5 +1,7 @@
 "use strict";
 
+let schedules; //予定
+
 // 予定を取得
 const getSchedule = function () {
   const request = new XMLHttpRequest();
@@ -8,7 +10,7 @@ const getSchedule = function () {
   request.responseType = "json";
   request.send();
   request.onload = function () {
-    const schedules = request.response;
+    schedules = request.response;
     console.log(schedules);
     createWeek(schedules);
   };
@@ -30,13 +32,13 @@ const createWeek = function (schedules) {
     const date = document.createElement("div");
     date.classList.add("date");
     date.classList.add("table-header");
-    date.innerHTML = today.getMonth() + "/" + today.getDate();
+    date.innerHTML = today.getMonth() + 1 + "/" + today.getDate();
     const times = document.createElement("div");
     times.classList.add("times");
     let j = 0;
     while (true) {
-      if (j > 3 && schedules[i].length <= 3) break;
-      if (j > 3 && j == schedules[i].length) break;
+      if (j >= 3 && schedules[i].length <= 3) break;
+      if (j >= 3 && j == schedules[i].length) break;
       const time = document.createElement("div");
       time.classList.add("time");
       for (let k = 0; k < HOURS; k++) {
@@ -61,7 +63,7 @@ const createWeek = function (schedules) {
           }
           if (minuteFlag == true) {
             minute.classList.add("scheduled");
-            const scheduleId = schedules[i][j].id; // schedule_idをつける
+            const scheduleId = schedules[i][j].id;
             minute.setAttribute("onclick", `displayDetails(${scheduleId})`);
           }
           hour.appendChild(minute);
@@ -89,6 +91,24 @@ getSchedule();
 const displayDetails = function (scheduleId) {
   const scheduleDetails = document.getElementById("schedule-details");
   scheduleDetails.classList.remove("display-none");
+  const scheduleDate = document.getElementById("schedule-date");
+  const scheduleStartHour = document.getElementById("schedule-start-hour");
+  const scheduleStartMinute = document.getElementById("schedule-start-minute");
+  const scheduleEndHour = document.getElementById("schedule-end-hour");
+  const scheduleEndMinute = document.getElementById("schedule-end-minute");
+  const scheduleContent = document.getElementById("schedule-content");
+  for (let i = 0; i < schedules.length; i++) {
+    for (let j = 0; j < schedules[i].length; j++) {
+      if (schedules[i][j].id == scheduleId) {
+        scheduleDate.innerHTML = schedules[i][j].date;
+        scheduleStartHour.innerHTML = schedules[i][j].startHour;
+        scheduleStartMinute.innerHTML = schedules[i][j].startMinute;
+        scheduleEndHour.innerHTML = schedules[i][j].endHour;
+        scheduleEndMinute.innerHTML = schedules[i][j].endMinute;
+        scheduleContent.innerHTML = schedules[i][j].content;
+      }
+    }
+  }
 };
 
 // 予定詳細の処理
@@ -99,3 +119,5 @@ goBackBtn.addEventListener("click", function () {
 });
 
 // 予定の更新ボタン
+const updateBtn = document.getElementById("update-schedule");
+updateBtn.addEventListener("click", function () {});
