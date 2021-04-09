@@ -3,9 +3,10 @@ var createConnection = require("../parts/connectDB");
 var router = express.Router();
 var { checkNotAuthenticated } = require("../parts/auth");
 
+//データ取得
 function getAdminData(sql, location, mail){
   return new Promise( async (resolve) => {
-    var connection = await createConnection();
+    const connection = await createConnection();
     connection.connect();
     await connection.query(sql, [location, mail], (err, results, fields) => {
       resolve(results);
@@ -13,10 +14,10 @@ function getAdminData(sql, location, mail){
     connection.end();
   });
 }
-
+//データを更新
 function updateData(sql, value1, value2){
   return new Promise( async (resolve) => {
-    var connection = await createConnection();
+    const connection = await createConnection();
     connection.connect();
     await connection.query(sql, [value1, value2], (err, results, fields) => {
       resolve(results);
@@ -31,12 +32,10 @@ router.get("/", (req, res, next) => {
 });
 //管理者データ取得
 router.get("/getData", async (req, res, next) => {
-  var mail = req.session.mail;
+  const mail = req.session.mail;
   const location = req.session.location;
-  console.log(location);
-  var sql = "SELECT * FROM admins JOIN spaces WHERE spaces.space_name = ? AND admins.admin_email = ? AND admins.space_id = spaces.space_id";
-  var admin = await getAdminData(sql, location, mail);
-  console.log(admin);
+  const sql = "SELECT * FROM admins JOIN spaces WHERE spaces.space_name = ? AND admins.admin_email = ? AND admins.space_id = spaces.space_id";
+  const admin = await getAdminData(sql, location, mail);
   res.json(admin);
 });
 
@@ -51,9 +50,9 @@ router.get("/updatePwd", (req, res, next) => {
 });
 //パスワード変更処理
 router.post("/updatePwd", async (req, res, next)=> {
-  var password = req.body.password;
-  var mail = req.session.mail;
-  var sql = "UPDATE admins SET admins.admin_password = ? JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_mail = ?"
+  const password = req.body.password;
+  const mail = req.session.mail;
+  const sql = "UPDATE admins SET admins.admin_password = ? JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_mail = ?"
   await updateData(sql, password, mail);
   res.redirect("/managemnt");
 });
