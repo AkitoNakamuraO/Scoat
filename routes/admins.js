@@ -98,6 +98,8 @@ router.get("/register", function (req, res, next) {
 router.post(
   "/register",
   function (req, res, next) {
+    req.session.mail = req.body.mail;
+    req.session.location = req.body.location;
     isEmpty(req, res, next);
   },
   function (req, res, next) {
