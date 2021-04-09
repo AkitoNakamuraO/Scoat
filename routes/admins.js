@@ -87,6 +87,8 @@ router.post(
     if (req.body.location.length <= 0 || req.body.mail.length <= 0 || req.body.password.length <= 0) {
       return res.redirect("/");
     }
+    req.session.mail = req.body.mail;
+    req.session.location = req.body.location;
     next();
   },
   passport.authenticate("local", {
@@ -94,17 +96,19 @@ router.post(
     failureRedirect: "/admins/login",
     failureFlash: true,
   })
-);
-
-// register
-router.get("/register", function (req, res, next) {
-  res.render("register");
-});
-router.post("/register", async function (req, res, next) {
-  var url = "mm";
-  var { location, mail, password, description } = req.body;
+  );
+  
+  // register
+  router.get("/register", function (req, res, next) {
+    res.render("register");
+  });
+  router.post("/register", async function (req, res, next) {
+    var { location, mail, password, description } = req.body;
+    req.session.mail = mail;
+    req.session.location = location;
+    var url = location;
   var hashedPassword = await bcrypt.hash(password, 10);
-
+  req.session.password = hashedPassword;
   var sqlSpace1 =
     "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
   var sqlSpace2 =
@@ -121,7 +125,7 @@ router.post("/register", async function (req, res, next) {
 });
 
 // logout
-router.get("/", function (req, res, next) {
+router.get("/logout", function (req, res, next) {
   req.logout();
   res.redirect("/admins/login");
 });

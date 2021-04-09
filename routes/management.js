@@ -1,12 +1,24 @@
 var express = require("express");
 var createConnection = require("../parts/connectDB");
 var router = express.Router();
+var { checkNotAuthenticated } = require("../parts/auth");
 
-function getAdminData(sql, userId){
+function getAdminData(sql, location, mail){
   return new Promise( async (resolve) => {
     var connection = await createConnection();
     connection.connect();
-    connection.query(sql, userId, (err, results, fields) => {
+    await connection.query(sql, [location, mail], (err, results, fields) => {
+      resolve(results);
+    })
+    connection.end();
+  });
+}
+
+function updateData(sql, value1, value2){
+  return new Promise( async (resolve) => {
+    var connection = await createConnection();
+    connection.connect();
+    await connection.query(sql, [value1, value2], (err, results, fields) => {
       resolve(results);
     })
     connection.end();
@@ -19,17 +31,18 @@ router.get("/", (req, res, next) => {
 });
 //管理者データ取得
 router.get("/getData", async (req, res, next) => {
-  //※userId セッション使用してない
-  var place = req.body.location;
-  var mail = req.body.mail;
-  var sql = "SELECT * FROM admins JOIN spaces WHERE admins.admin_email = ? AND admins.space_id = spaces.space_id";
-  var admin = await getAdminData(sql, place, mail);
+  var mail = req.session.mail;
+  const location = req.session.location;
+  console.log(location);
+  var sql = "SELECT * FROM admins JOIN spaces WHERE spaces.space_name = ? AND admins.admin_email = ? AND admins.space_id = spaces.space_id";
+  var admin = await getAdminData(sql, location, mail);
+  console.log(admin);
   res.json(admin);
 });
 
 //ログイン画面に遷移
 router.get("/logout", (req, res, next) => {
-  res.render("login");
+  res.redirect("/admins/logout");
 });
 
 //updatePasswordに遷移
@@ -37,8 +50,12 @@ router.get("/updatePwd", (req, res, next) => {
   res.render("updatePassword");
 });
 //パスワード変更処理
-router.post("/updatePwd", (req, res, next)=> {
-  res.redirect("/");
+router.post("/updatePwd", async (req, res, next)=> {
+  var password = req.body.password;
+  var mail = req.session.mail;
+  var sql = "UPDATE admins SET admins.admin_password = ? JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_mail = ?"
+  await updateData(sql, password, mail);
+  res.redirect("/managemnt");
 });
 
 //updatePlaceに遷移
