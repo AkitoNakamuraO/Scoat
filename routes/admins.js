@@ -128,16 +128,21 @@ router.post(
 
 // logout
 router.get("/logout", function (req, res, next) {
-  req.logout();
-  res.redirect("/admins/login");
+  req.session.destroy();
+  console.log("logout");
+  console.log(req.session);
+  res.redirect("/");
 });
 
 //displayPart
-router.get("/diplayPart", (req, res, next) =>{
-  const sql = "SELECT * FROM table WHERE space_name = ?;";
-  if(req.session.spaceName == undefined){
-    const admin = checkUser(sql, req.session.spaceName);
-    res.json(admin);
+router.get("/displayPart", (req, res, next) =>{
+  console.log(req.session);
+  if(req.session.spaceId === undefined){
+    const data={check:true};
+    res.json(data);
+  } else {
+    const data={check:false};
+    res.json(data);
   }
 });
 

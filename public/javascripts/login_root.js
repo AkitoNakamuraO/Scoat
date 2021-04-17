@@ -1,6 +1,6 @@
 "use strict";
 
-const displayParts = function () {
+const displayPart = function () {
   const request = new XMLHttpRequest();
   const requestURL = "/admins/displayPart";
   request.open("GET", requestURL);
@@ -9,18 +9,23 @@ const displayParts = function () {
   request.onload = function () {
     const data = request.response;
     //セッションに場所があったら、場所入力を表示
-    if(data != null) show();
+    console.log(data);
+    if(data.check == true) showPart();
   };
 };
 
 //セッションに名前がなかったら、表示する
-const showPrats = function(){
+const showPart = function(){
   const locationId = document.getElementById("locationPart");
   const locationName = document.createElement("h2");
-  const locationPart = document.createElement("input");
-  locationPart.name = "location";
-  locationPart.placeholder = "input location";
-  locationName.textContent = "場所の名前";
-  locationName.appendChild(locationId);
-  locationPart.after(locationName);
+  const locationInput = document.createElement("input");
+
+  locationName.innerHTML = "場所の名前";
+  locationInput.type = "text";
+  locationInput.name = "location";
+  locationInput.placeholder = "input location";
+  locationId.appendChild(locationName);
+  locationId.appendChild(locationInput);
 }
+
+displayPart();
