@@ -124,11 +124,11 @@ router.get("/update/:id", function (req, res, next) {
 router.post("/update", async function (req, res, next) {
   const { date, start, end, contents } = req.body;
   const scheduleId = req.session.scheduleId;
-  console.log(scheduleId);
+  const spaceId = req.session.spaceId;
   if (date.length <= 0 || start.length <= 0 || end.length <= 0 || contents.length <= 0) {
     res.redirect("update");
   }
-  const sql = "UPDATE schedules SET schedules(schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?) WHERE schdule_id = ?;";
+  const sql = "UPDATE schedules SET schedule_date = ?, schedule_start_time = ?, schedule_end_time = ?, schedule_contents = ?  WHERE schedule_id = ?;";
   await updateSchedule(sql, date, start, end, contents, scheduleId);
   res.redirect("space/" + spaceId);
 });
