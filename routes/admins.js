@@ -132,4 +132,13 @@ router.get("/logout", function (req, res, next) {
   res.redirect("/admins/login");
 });
 
+//displayPart
+router.get("/diplayPart", (req, res, next) =>{
+  const sql = "SELECT * FROM table WHERE space_name = ?;";
+  if(req.session.spaceName == undefined){
+    const admin = checkUser(sql, req.session.spaceName);
+    res.json(admin);
+  }
+});
+
 module.exports = router;

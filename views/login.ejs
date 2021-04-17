@@ -11,8 +11,7 @@
     <%- include("login_error",{locationErrors: locationErrors, mailErrors: mailErrors, passErrors:passErrors}); %>
     <div class="Login">
       <form action="/admins/login" method="POST">
-        <h2>場所の名前</h2>
-        <input type="text" name="location" placeholder="input location">
+        <div id ="locationPart"></div>
         <h2>管理者メールアドレス</h2>
         <input type="text" name="mail" placeholder="abcde@xxx.com">
         <h2>管理者パスワード</h2>
