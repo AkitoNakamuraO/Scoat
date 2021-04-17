@@ -11,7 +11,6 @@ const getSchedule = function () {
   request.send();
   request.onload = function () {
     schedules = request.response;
-    console.log(schedules);
     createWeek(schedules);
   };
 };

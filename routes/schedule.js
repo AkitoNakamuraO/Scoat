@@ -95,11 +95,13 @@ router.post("/register", async function (req, res, next) {
 });
 
 // 予定更新
-router.get("/update", function (req, res, next) {});
+router.get("/update", function (req, res, next) {
+  res.render("updatePlace");
+});
 router.post("/update", function (req, res, next) {});
 
 // 戻るボタン
-router.post("/return-schedules", function (req, res, next) {
+router.get("/return-schedules", function (req, res, next) {
   const spaceId = req.session.spaceId;
   res.redirect("space/" + spaceId);
 });
