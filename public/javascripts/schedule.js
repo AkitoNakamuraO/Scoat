@@ -1,5 +1,22 @@
 "use strict";
 
+// spaceの名前を取得し表示する
+const getSpaceName = function () {
+  const request = new XMLHttpRequest();
+  const requestURL = "/schedule/get-space-name";
+  request.open("GET", requestURL);
+  request.responseType = "json";
+  request.send();
+  request.onload = function () {
+    const name = request.response;
+    const spaceNname = document.getElementById("place-name");
+    spaceNname.innerHTML = name;
+  };
+};
+
+// spaceの名前を取得
+getSpaceName();
+
 let schedules; //予定
 
 // 予定を取得

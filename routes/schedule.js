@@ -3,15 +3,18 @@ var router = express.Router();
 const createConnection = require("../parts/connectDB");
 const moment = require("moment");
 
-function dateFormat(date, format) {
-  format = format.replace(/YYYY/, date.getFullYear());
-  format = format.replace(/MM/, date.getMonth() + 1);
-  format = format.replace(/DD/, date.getDate());
-
-  return format;
-}
-
 const getSchedules = function (sql, spaceId) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    connection.query(sql, spaceId, function (err, rows, fields) {
+      resolve(rows);
+    });
+    connection.end();
+  });
+};
+
+const getSpaceName = function (sql, spaceId) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
@@ -37,6 +40,14 @@ const registerSchedules = function (sql, spaceId, date, start, end, contents) {
 router.get("/space/:id", function (req, res, next) {
   req.session.spaceId = req.params.id;
   res.render("schedule");
+});
+
+// Spaceの名前を取得する
+router.get("/get-space-name", async function (req, res, next) {
+  const sql = "SELECT space_name FROM spaces WHERE space_id = ?";
+  const name = await getSpaceName(sql, req.session.spaceId);
+  req.session.spaceName = name[0].space_name;
+  res.json(name[0].space_name);
 });
 
 // スケジュール情報を取得
