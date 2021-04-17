@@ -36,6 +36,17 @@ const registerSchedules = function (sql, spaceId, date, start, end, contents) {
   });
 };
 
+const updateSchedule = function (sql, date, start, end, contents, scheduleId) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    connection.query(sql, [date, start, end, contents, scheduleId], function (err, rows, fields) {
+      resolve(rows);
+    });
+    connection.end();
+  });
+};
+
 // 画面を表示
 router.get("/space/:id", function (req, res, next) {
   req.session.spaceId = req.params.id;
@@ -106,10 +117,21 @@ router.post("/register", async function (req, res, next) {
 });
 
 // 予定更新
-router.get("/update", function (req, res, next) {
-  res.render("updatePlace");
+router.get("/update/:id", function (req, res, next) {
+  req.session.scheduleId = req.params.id;
+  res.render("updateSchedule");
 });
-router.post("/update", function (req, res, next) {});
+router.post("/update", async function (req, res, next) {
+  const { date, start, end, contents } = req.body;
+  const scheduleId = req.session.scheduleId;
+  console.log(scheduleId);
+  if (date.length <= 0 || start.length <= 0 || end.length <= 0 || contents.length <= 0) {
+    res.redirect("update");
+  }
+  const sql = "UPDATE schedules SET schedules(schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?) WHERE schdule_id = ?;";
+  await updateSchedule(sql, date, start, end, contents, scheduleId);
+  res.redirect("space/" + spaceId);
+});
 
 // 戻るボタン
 router.get("/return-schedules", function (req, res, next) {

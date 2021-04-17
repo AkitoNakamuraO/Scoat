@@ -122,6 +122,8 @@ const displayDetails = function (scheduleId) {
         scheduleEndHour.innerHTML = schedules[i][j].endHour;
         scheduleEndMinute.innerHTML = schedules[i][j].endMinute;
         scheduleContent.innerHTML = schedules[i][j].content;
+        const aTag = document.getElementById("update-schedule");
+        aTag.href = "/schedule/update/" + scheduleId;
       }
     }
   }
@@ -133,7 +135,3 @@ goBackBtn.addEventListener("click", function () {
   const scheduleDetails = document.getElementById("schedule-details");
   scheduleDetails.classList.add("display-none");
 });
-
-// 予定の更新ボタン
-const updateBtn = document.getElementById("update-schedule");
-updateBtn.addEventListener("click", function () {});
