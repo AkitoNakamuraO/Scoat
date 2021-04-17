@@ -1,5 +1,22 @@
 "use strict";
 
+// spaceの名前を取得し表示する
+const getSpaceName = function () {
+  const request = new XMLHttpRequest();
+  const requestURL = "/schedule/get-space-name";
+  request.open("GET", requestURL);
+  request.responseType = "json";
+  request.send();
+  request.onload = function () {
+    const name = request.response;
+    const spaceNname = document.getElementById("place-name");
+    spaceNname.innerHTML = name;
+  };
+};
+
+// spaceの名前を取得
+getSpaceName();
+
 let schedules; //予定
 
 // 予定を取得
@@ -11,7 +28,6 @@ const getSchedule = function () {
   request.send();
   request.onload = function () {
     schedules = request.response;
-    console.log(schedules);
     createWeek(schedules);
   };
 };
@@ -106,6 +122,8 @@ const displayDetails = function (scheduleId) {
         scheduleEndHour.innerHTML = schedules[i][j].endHour;
         scheduleEndMinute.innerHTML = schedules[i][j].endMinute;
         scheduleContent.innerHTML = schedules[i][j].content;
+        const aTag = document.getElementById("update-schedule");
+        aTag.href = "/schedule/update/" + scheduleId;
       }
     }
   }
@@ -117,7 +135,3 @@ goBackBtn.addEventListener("click", function () {
   const scheduleDetails = document.getElementById("schedule-details");
   scheduleDetails.classList.add("display-none");
 });
-
-// 予定の更新ボタン
-const updateBtn = document.getElementById("update-schedule");
-updateBtn.addEventListener("click", function () {});
