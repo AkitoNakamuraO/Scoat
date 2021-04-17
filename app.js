@@ -29,7 +29,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
-      // _expires: 1000 * 60 * 5,
+      _expires: 1000 * 60 * 30,
     },
   })
 );
