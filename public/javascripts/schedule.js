@@ -14,7 +14,7 @@ const getSpaceName = function () {
   };
 };
 
-// spaceの名前を取得
+// spaceの名前を取得し表示
 getSpaceName();
 
 let schedules; //予定
@@ -28,6 +28,7 @@ const getSchedule = function () {
   request.send();
   request.onload = function () {
     schedules = request.response;
+    console.log(schedules);
     createWeek(schedules);
   };
 };
