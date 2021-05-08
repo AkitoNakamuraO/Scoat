@@ -47,6 +47,17 @@ const updateSchedule = function (sql, date, start, end, contents, scheduleId) {
   });
 };
 
+const deleteSchedule = function (sql, scheduleId) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    connection.query(sql, scheduleId, function (err, rows, fields) {
+      resolve(rows);
+    });
+    connection.end();
+  });
+};
+
 // 画面を表示
 router.get("/space/:id", function (req, res, next) {
   req.session.spaceId = req.params.id;
@@ -58,8 +69,6 @@ router.get("/get-space-name", async function (req, res, next) {
   const sql = "SELECT space_name FROM spaces WHERE space_id = ?";
   const name = await getSpaceName(sql, req.session.spaceId);
   req.session.spaceName = await name[0].space_name;
-  console.log("getSpaceName");
-  console.log(req.session);
   res.json(name[0].space_name);
 });
 
@@ -133,6 +142,15 @@ router.post("/update", async function (req, res, next) {
   const sql = "UPDATE schedules SET schedule_date = ?, schedule_start_time = ?, schedule_end_time = ?, schedule_contents = ?  WHERE schedule_id = ?;";
   await updateSchedule(sql, date, start, end, contents, scheduleId);
   res.redirect("space/" + spaceId);
+});
+
+// 予定削除
+router.get("/delete/:id", async function (req, res, next) {
+  const spaceId = req.session.spaceId;
+  const scheduleId = req.params.id;
+  const sql = "DELETE FROM schedules WHERE schedule_id = ?";
+  await deleteSchedule(sql, scheduleId);
+  res.redirect("/schedule/space/" + spaceId);
 });
 
 // 戻るボタン

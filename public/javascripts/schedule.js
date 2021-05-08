@@ -123,8 +123,10 @@ const displayDetails = function (scheduleId) {
         scheduleEndHour.innerHTML = schedules[i][j].endHour;
         scheduleEndMinute.innerHTML = schedules[i][j].endMinute;
         scheduleContent.innerHTML = schedules[i][j].content;
-        const aTag = document.getElementById("update-schedule");
-        aTag.href = "/schedule/update/" + scheduleId;
+        const updateScheduleTag = document.getElementById("update-schedule");
+        updateScheduleTag.href = "/schedule/update/" + scheduleId;
+        const deleteScheduleTag = document.getElementById("delete-schedule");
+        deleteScheduleTag.href = "/schedule/delete/" + scheduleId;
       }
     }
   }
