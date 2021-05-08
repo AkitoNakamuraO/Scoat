@@ -69,6 +69,16 @@ function checkUser(sql, username) {
     connection.end();
   });
 }
+function updateURL(sql, new_url) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    await connection.query(sql, new_url, function (err, rows, fields) {
+      resolve(rows);
+    });
+    connection.end();
+  });
+}
 
 const getSpaceName = function (sql, spaceId) {
   return new Promise(async (resolve) => {
@@ -128,19 +138,22 @@ router.post(
     isUnique(req, res, next);
   },
   async function (req, res, next) {
-    const url = "mm";
+    const url = location.protcol+location.host+"/schedule/space/";
     const { location, mail, password, description } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const sqlSpace1 = "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
-    const sqlSpace2 = "SELECT * FROM spaces WHERE space_name = ? AND space_url = ?;";
+    const sqlSpace2 = "SELECT * FROM spaces  WHERE space_name = ? AND space_url = ?;";
     const sqlAdmin = "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
+    const sqlUpdate = "UPDATE spaces SET space_url = ? WHERE space_url = '-1';"
 
-    await insertPlace(sqlSpace1, location, description, url);
-    const result = await selectPlace(sqlSpace2, location, url);
+    await insertPlace(sqlSpace1, location, description, '-1');
+    const result = await selectPlace(sqlSpace2, location, '-1');
     const placeId = result[0].space_id;
+    const new_url = url + placeId;
     await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
-    
+    await updateURL(sqlUpdate, new_url);
+
     res.redirect("/management");
   }
 );
