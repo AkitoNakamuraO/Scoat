@@ -9,12 +9,12 @@ const displayPart = function () {
   request.onload = function () {
     const data = request.response;
     //セッションに場所があったら、場所入力を表示
-    if(data.check == true) showPart();
+    if (data.check == true) showPart();
   };
 };
 
 //セッションに名前がなかったら、表示する
-const showPart = function(){
+const showPart = function () {
   const locationId = document.getElementById("locationPart");
   const locationName = document.createElement("h2");
   const locationInput = document.createElement("input");
@@ -25,6 +25,6 @@ const showPart = function(){
   locationInput.placeholder = "input location";
   locationId.appendChild(locationName);
   locationId.appendChild(locationInput);
-}
+};
 
 displayPart();
