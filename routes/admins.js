@@ -3,7 +3,7 @@ var router = express.Router();
 var bcrypt = require("bcryptjs");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var { checkNotAuthenticated } = require("../parts/auth");
+const { checkAuthenticated, checkNotAuthenticated } = require("../parts/auth");
 var createConnection = require("../parts/connectDB");
 const { isEmpty, isCorrect, isUnique } = require("../parts/config_error");
 
@@ -71,12 +71,12 @@ function checkUser(sql, username) {
 }
 
 // login from index
-router.get("/login/public", function (req, res, next) {
+router.get("/login/public", checkNotAuthenticated, function (req, res, next) {
   req.session.destroy();
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 //login from calender
-router.get("/login", function (req, res, next) {
+router.get("/login", checkNotAuthenticated, function (req, res, next) {
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
@@ -97,7 +97,7 @@ router.post(
 );
 
 // register
-router.get("/register", function (req, res, next) {
+router.get("/register", checkNotAuthenticated, function (req, res, next) {
   res.render("register", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
@@ -140,13 +140,13 @@ router.get("/logout", function (req, res, next) {
 });
 
 //displayPart
-router.get("/displayPart", (req, res, next) =>{
+router.get("/displayPart", (req, res, next) => {
   console.log(req.session);
-  if(req.session.spaceId === undefined){
-    const data={check:true};
+  if (req.session.spaceId === undefined) {
+    const data = { check: true };
     res.json(data);
   } else {
-    const data={check:false};
+    const data = { check: false };
     res.json(data);
   }
 });
