@@ -118,7 +118,7 @@ router.post(
   "/register",
   function (req, res, next) {
     req.session.mail = req.body.mail;
-    req.session.location = req.body.location;
+    req.session.locattion = req.body.location;
     isEmpty(req, res, next);
   },
   function (req, res, next) {
@@ -140,7 +140,7 @@ router.post(
     const result = await selectPlace(sqlSpace2, location, url);
     const placeId = result[0].space_id;
     await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
-
+    
     res.redirect("/management");
   }
 );
