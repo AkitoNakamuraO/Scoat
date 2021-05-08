@@ -9,7 +9,6 @@ const displayPart = function () {
   request.onload = function () {
     const data = request.response;
     //セッションに場所があったら、場所入力を表示
-    console.log(data);
     if(data.check == true) showPart();
   };
 };

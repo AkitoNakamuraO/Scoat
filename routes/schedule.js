@@ -68,7 +68,7 @@ router.get("/space/:id", function (req, res, next) {
 router.get("/get-space-name", async function (req, res, next) {
   const sql = "SELECT space_name FROM spaces WHERE space_id = ?";
   const name = await getSpaceName(sql, req.session.spaceId);
-  req.session.spaceName = await name[0].space_name;
+  req.session.location = await name[0].space_name;
   res.json(name[0].space_name);
 });
 

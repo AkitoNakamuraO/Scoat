@@ -70,20 +70,34 @@ function checkUser(sql, username) {
   });
 }
 
+const getSpaceName = function (sql, spaceId) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    connection.query(sql, spaceId, function (err, rows, fields) {
+      resolve(rows);
+    });
+    connection.end();
+  });
+};
+
 // login from index
-router.get("/login/public", checkNotAuthenticated, function (req, res, next) {
+router.get("/login/public", function (req, res, next) {
   req.session.destroy();
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 //login from calender
-router.get("/login", checkNotAuthenticated, function (req, res, next) {
+router.get("/login", async function (req, res, next) {
+  const sql = "SELECT space_name FROM spaces WHERE space_id = ?";
+  const name = await getSpaceName(sql, req.session.spaceId);
+  req.session.location = await name[0].space_name;
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
   "/login",
   function (req, res, next) {
     req.session.mail = req.body.mail;
-    req.session.location = req.body.location;
+    if (req.session.location == undefined) req.session.location = req.body.location;
     isEmpty(req, res, next);
   },
   function (req, res, next) {
@@ -134,14 +148,11 @@ router.post(
 // logout
 router.get("/logout", function (req, res, next) {
   req.session.destroy();
-  console.log("logout");
-  console.log(req.session);
   res.redirect("/");
 });
 
 //displayPart
 router.get("/displayPart", (req, res, next) => {
-  console.log(req.session);
   if (req.session.spaceId === undefined) {
     const data = { check: true };
     res.json(data);
