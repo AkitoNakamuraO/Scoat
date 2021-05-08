@@ -57,9 +57,7 @@ router.get("/space/:id", function (req, res, next) {
 router.get("/get-space-name", async function (req, res, next) {
   const sql = "SELECT space_name FROM spaces WHERE space_id = ?";
   const name = await getSpaceName(sql, req.session.spaceId);
-  req.session.spaceName = await name[0].space_name;
-  console.log("getSpaceName");
-  console.log(req.session);
+  req.session.location = await name[0].space_name;
   res.json(name[0].space_name);
 });
 
@@ -126,7 +124,6 @@ router.get("/update/:id", function (req, res, next) {
 router.post("/update", async function (req, res, next) {
   const { date, start, end, contents } = req.body;
   const scheduleId = req.session.scheduleId;
-  console.log(scheduleId);
   if (date.length <= 0 || start.length <= 0 || end.length <= 0 || contents.length <= 0) {
     res.redirect("update");
   }
