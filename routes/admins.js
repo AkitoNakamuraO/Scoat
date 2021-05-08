@@ -3,8 +3,9 @@ var router = express.Router();
 var bcrypt = require("bcryptjs");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var { checkNotAuthenticated } = require("../parts/auth");
+const { checkAuthenticated, checkNotAuthenticated } = require("../parts/auth");
 var createConnection = require("../parts/connectDB");
+const { isEmpty, isCorrect, isUnique } = require("../parts/config_error");
 
 passport.use(
   new LocalStrategy(
@@ -29,13 +30,9 @@ function insertPlace(sql, location, description, url) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
-    connection.query(
-      sql,
-      [location, description, url],
-      function (err, rows, fields) {
-        resolve(rows);
-      }
-    );
+    connection.query(sql, [location, description, url], function (err, rows, fields) {
+      resolve(rows);
+    });
     connection.end();
   });
 }
@@ -44,13 +41,9 @@ function insertAdmin(sql, spaceId, mail, password) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
-    await connection.query(
-      sql,
-      [spaceId, mail, password],
-      function (err, rows, fields) {
-        resolve(rows);
-      }
-    );
+    await connection.query(sql, [spaceId, mail, password], function (err, rows, fields) {
+      resolve(rows);
+    });
     connection.end();
   });
 }
@@ -76,24 +69,35 @@ function checkUser(sql, username) {
     connection.end();
   });
 }
+function updateURL(sql, new_url) {
+  return new Promise(async (resolve) => {
+    const connection = await createConnection();
+    connection.connect();
+    await connection.query(sql, new_url, function (err, rows, fields) {
+      resolve(rows);
+    });
+    connection.end();
+  });
+}
 
-// login
-router.get("/login", function (req, res, next) {
-  res.render("login");
+// login from index
+router.get("/login/public", checkNotAuthenticated, function (req, res, next) {
+  req.session.destroy();
+  res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
+});
+//login from calender
+router.get("/login", checkNotAuthenticated, function (req, res, next) {
+  res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
   "/login",
   function (req, res, next) {
-    if (
-      req.body.location.length <= 0 ||
-      req.body.mail.length <= 0 ||
-      req.body.password.length <= 0
-    ) {
-      return res.redirect("/");
-    }
     req.session.mail = req.body.mail;
     req.session.location = req.body.location;
-    next();
+    isEmpty(req, res, next);
+  },
+  function (req, res, next) {
+    isCorrect(req, res, next);
   },
   passport.authenticate("local", {
     successRedirect: "/management",
@@ -103,37 +107,61 @@ router.post(
 );
 
 // register
-router.get("/register", function (req, res, next) {
-  res.render("register");
+router.get("/register", checkNotAuthenticated, function (req, res, next) {
+  res.render("register", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
-router.post("/register", async function (req, res, next) {
-  const { location, mail, password, description } = req.body;
-  req.session.mail = mail;
-  req.session.location = location;
-  const url = location;
-  console.log('111111111111')
-  console.log(url)
-  const hashedPassword = await bcrypt.hash(password, 10);
-  req.session.password = hashedPassword;
-  const sqlSpace1 =
-    "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
-  const sqlSpace2 =
-    "SELECT * FROM spaces WHERE space_name = ? AND space_url = ?;";
-  const sqlAdmin =
-    "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
+router.post(
+  "/register",
+  function (req, res, next) {
+    req.session.mail = req.body.mail;
+    req.session.location = req.body.location;
+    isEmpty(req, res, next);
+  },
+  function (req, res, next) {
+    isCorrect(req, res, next);
+  },
+  function (req, res, next) {
+    isUnique(req, res, next);
+  },
+  async function (req, res, next) {
+    const url = location.protcol+location.host+"/schedule/space/";
+    const { location, mail, password, description } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  await insertPlace(sqlSpace1, location, description, url);
-  const result = await selectPlace(sqlSpace2, location, url);
-  const placeId = result[0].space_id;
-  await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
+    const sqlSpace1 = "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
+    const sqlSpace2 = "SELECT * FROM spaces  WHERE space_name = ? AND space_url = ?;";
+    const sqlAdmin = "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
+    const sqlUpdate = "UPDATE spaces SET space_url = ? WHERE space_url = '-1';"
 
-  res.redirect("/management");
-});
+    await insertPlace(sqlSpace1, location, description, '-1');
+    const result = await selectPlace(sqlSpace2, location, '-1');
+    const placeId = result[0].space_id;
+    const new_url = url + placeId;
+    await insertAdmin(sqlAdmin, placeId, mail, hashedPassword);
+    await updateURL(sqlUpdate, new_url);
+
+    res.redirect("/management");
+  }
+);
 
 // logout
 router.get("/logout", function (req, res, next) {
-  req.logout();
-  res.redirect("/admins/login");
+  req.session.destroy();
+  console.log("logout");
+  console.log(req.session);
+  res.redirect("/");
+});
+
+//displayPart
+router.get("/displayPart", (req, res, next) => {
+  console.log(req.session);
+  if (req.session.spaceId === undefined) {
+    const data = { check: true };
+    res.json(data);
+  } else {
+    const data = { check: false };
+    res.json(data);
+  }
 });
 
 module.exports = router;

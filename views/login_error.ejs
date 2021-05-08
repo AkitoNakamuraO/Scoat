@@ -1,0 +1,23 @@
+<% if(locationErrors.length > 0 || mailErrors.length > 0 || passErrors.length > 0){ %>
+<ul style="list-style-type:none">
+  
+  <!-- locationエラー -->
+  <% if(locationErrors.length > 0){ %>
+  <% locationErrors.forEach((error) => {%>
+  <li><%= error %></li>
+  <% })}; %>
+
+  <!-- mailエラー -->
+  <% if(mailErrors.length > 0){ %>
+  <% mailErrors.forEach((error) => {%>
+  <li><%= error %></li>
+  <% })}; %>
+
+  <!-- passwordエラー -->
+  <% if(passErrors.length > 0){ %>
+  <% passErrors.forEach((error) => {%>
+  <li><%= error %></li>
+  <% })}; %>
+
+</ul>
+<% } %>
