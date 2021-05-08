@@ -1,10 +1,10 @@
 module.exports = {
   //checkAuthenticated
-  checkAuthenticated: function (req, res, next) {
+  checkAuthenticated:async function (req, res, next) {
     if (req.isAuthenticated()) {
       return next();
     }
-    res.redirect("/admins/login");
+    res.redirect("/admins/login/public");
   },
   //checkNotAuthenticated
   checkNotAuthenticated: function (req, res, next) {

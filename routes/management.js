@@ -27,7 +27,7 @@ function updateData(sql, value1, value2) {
 }
 
 //管理画面表示
-router.get("/", checkAuthenticated, (req, res, next) => {
+router.get("/", (req, res, next) => {
   res.render("management");
 });
 //管理者データ取得

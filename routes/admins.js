@@ -92,7 +92,7 @@ const getSpaceName = function (sql, spaceId) {
 };
 
 // login from index
-router.get("/login/public", function (req, res, next) {
+router.get("/login/public", checkAuthenticated,function (req, res, next) {
   req.session.destroy();
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
@@ -121,14 +121,15 @@ router.post(
 );
 
 // register
-router.get("/register", checkNotAuthenticated, function (req, res, next) {
+router.get("/register", function (req, res, next) {
+  req.session.destroy();
   res.render("register", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
   "/register",
   function (req, res, next) {
     req.session.mail = req.body.mail;
-    req.session.locattion = req.body.location;
+    req.session.location = req.body.location;
     isEmpty(req, res, next);
   },
   function (req, res, next) {
@@ -138,7 +139,7 @@ router.post(
     isUnique(req, res, next);
   },
   async function (req, res, next) {
-    const url = location.protcol+location.host+"/schedule/space/";
+    const url = "http://localhost:3000/schedule/space/";
     const { location, mail, password, description } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
