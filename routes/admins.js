@@ -70,7 +70,12 @@ function checkUser(sql, username) {
   });
 }
 
-// login
+// login from index
+router.get("/login/public", function (req, res, next) {
+  req.session.destroy();
+  res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
+});
+//login from calender
 router.get("/login", function (req, res, next) {
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
@@ -128,8 +133,22 @@ router.post(
 
 // logout
 router.get("/logout", function (req, res, next) {
-  req.logout();
-  res.redirect("/admins/login");
+  req.session.destroy();
+  console.log("logout");
+  console.log(req.session);
+  res.redirect("/");
+});
+
+//displayPart
+router.get("/displayPart", (req, res, next) =>{
+  console.log(req.session);
+  if(req.session.spaceId === undefined){
+    const data={check:true};
+    res.json(data);
+  } else {
+    const data={check:false};
+    res.json(data);
+  }
 });
 
 module.exports = router;
