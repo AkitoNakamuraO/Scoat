@@ -70,7 +70,12 @@ function checkUser(sql, username) {
   });
 }
 
-// login
+// login from index
+router.get("/login/public", function (req, res, next) {
+  req.session.destroy();
+  res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
+});
+//login from calender
 router.get("/login", function (req, res, next) {
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
