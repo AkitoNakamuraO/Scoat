@@ -111,6 +111,8 @@ router.post("/register", async function (req, res, next) {
   req.session.mail = mail;
   req.session.location = location;
   const url = location;
+  console.log('111111111111')
+  console.log(url)
   const hashedPassword = await bcrypt.hash(password, 10);
   req.session.password = hashedPassword;
   const sqlSpace1 =
