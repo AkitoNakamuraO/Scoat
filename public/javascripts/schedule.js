@@ -82,6 +82,8 @@ const createWeek = function (schedules) {
             minute.classList.add("scheduled");
             const scheduleId = schedules[i][j].id;
             minute.setAttribute("onclick", `displayDetails(${scheduleId})`);
+            minute.setAttribute("data-toggle", "modal");
+            minute.setAttribute("data-target", "#modal");
           }
           hour.appendChild(minute);
         }
@@ -107,7 +109,7 @@ getSchedule();
 // タップされた予定の詳細表示
 const displayDetails = function (scheduleId) {
   const scheduleDetails = document.getElementById("schedule-details");
-  scheduleDetails.classList.remove("display-none");
+  // scheduleDetails.classList.remove("display-none");
   const scheduleDate = document.getElementById("schedule-date");
   const scheduleStartHour = document.getElementById("schedule-start-hour");
   const scheduleStartMinute = document.getElementById("schedule-start-minute");
@@ -133,8 +135,8 @@ const displayDetails = function (scheduleId) {
 };
 
 // 予定詳細の処理
-const goBackBtn = document.getElementById("go-back");
-goBackBtn.addEventListener("click", function () {
-  const scheduleDetails = document.getElementById("schedule-details");
-  scheduleDetails.classList.add("display-none");
-});
+// const goBackBtn = document.getElementById("go-back");
+// goBackBtn.addEventListener("click", function () {
+//   const scheduleDetails = document.getElementById("schedule-details");
+//   scheduleDetails.classList.add("display-none");
+// });

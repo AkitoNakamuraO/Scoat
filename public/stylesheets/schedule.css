@@ -61,7 +61,7 @@
 }
 
 /* 予定詳細 */
-.schedule-details {
+/* .schedule-details {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -70,4 +70,4 @@
   height: 50vh;
   background-color: var(--base-color);
   border: 1px solid var(--border-color);
-}
+} */

@@ -12,10 +12,10 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <nav class="navbar navbar-dark bg-primary">
+    <nav class="navbar navbar-dark bg-primary mb-5">
       <a href="/" class="navbar-brand">Scoat</a>
     </nav>
-    <div class="container pt-5 Register">
+    <div class="container Register">
       <%- include("login_error",{locationErrors: locationErrors, mailErrors: mailErrors, passErrors:passErrors}); %>
       <form action="/admins/register" method="POST">
         <div class="form-group">
