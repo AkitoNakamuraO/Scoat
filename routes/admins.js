@@ -92,7 +92,7 @@ const getSpaceName = function (sql, spaceId) {
 };
 
 // login from index
-router.get("/login/public", checkAuthenticated,function (req, res, next) {
+router.get("/login/public", function (req, res, next) {
   req.session.destroy();
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });

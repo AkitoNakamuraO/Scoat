@@ -21,6 +21,7 @@
     <a href="/admins/logout">ログアウト</a>
   </header>
   <main>
+
     <div id="place">
       <p>場所の名前</p>
     </div>
@@ -30,9 +31,11 @@
     <div id="description">
       <p>場所の説明</p>
     </div>
-    <div id="url">
+    <div id="url" style ="position: relative; display: inline-block;">
       <p>URL</p>
+      <input type="button" value="コピー📋️" onclick="copy()" id="copyButton">
     </div>
+
     <div>
       <form action="/management/updatePwd" method="GET" />
       <p><input type="submit" value="パスワード変更" /></p>
@@ -44,6 +47,7 @@
       <p><input type="submit" value="カレンダーを表示" /></p>
       </form>
     </div>
+
   </main>
 </body>
 
