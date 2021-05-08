@@ -13,21 +13,25 @@
     <script src="/javascripts/login_root.js"></script>
   </head>
   <body>
-    <h1>Scoat</h1>
-    <p>Welcome to Scoat</p>
-    <%- include("login_error",{locationErrors: locationErrors, mailErrors: mailErrors, passErrors:passErrors}); %>
-    <div class="Login">
+    <nav class="navbar navbar-dark bg-primary">
+      <a href="/" class="navbar-brand">Scoat</a>
+    </nav>
+    <div class="container Login">
+      <%- include("login_error",{locationErrors: locationErrors, mailErrors: mailErrors, passErrors:passErrors}); %>
       <form action="/admins/login" method="POST">
         <div id="locationPart"></div>
-        <h2>管理者メールアドレス</h2>
-        <input type="text" name="mail" placeholder="abcde@xxx.com" />
-        <h2>管理者パスワード</h2>
-        <input type="password" name="password" placeholder="＊＊＊＊＊" />
-
-        <button class="loginBtn" type="submit">ログイン</button>
+        <div class="form-group">
+          <label for="mail">管理者メールアドレス</label>
+          <input type="text" class="form-control" id="mail" name="mail" placeholder="abcde@xxx.com" />
+        </div>
+        <div class="form-group">
+          <label for="password">管理者パスワード</label>
+          <input type="text" class="form-control" id="password" name="password" placeholder="＊＊＊＊＊" />
+        </div>
+        <button class="loginBtn btn btn-primary" type="submit">ログイン</button>
       </form>
       <!-- まだ途中 -->
-      <button class="repassBtn" type="submit">パスワードを忘れた方</button>
+      <!-- <button class="repassBtn" type="submit">パスワードを忘れた方</button> -->
     </div>
   </body>
 </html>
