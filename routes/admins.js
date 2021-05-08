@@ -3,7 +3,7 @@ var router = express.Router();
 var bcrypt = require("bcryptjs");
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
-var { checkNotAuthenticated } = require("../parts/auth");
+const { checkAuthenticated, checkNotAuthenticated } = require("../parts/auth");
 var createConnection = require("../parts/connectDB");
 const { isEmpty, isCorrect, isUnique } = require("../parts/config_error");
 
@@ -71,7 +71,7 @@ function checkUser(sql, username) {
 }
 
 // login
-router.get("/login", function (req, res, next) {
+router.get("/login", checkNotAuthenticated, function (req, res, next) {
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
@@ -92,7 +92,7 @@ router.post(
 );
 
 // register
-router.get("/register", function (req, res, next) {
+router.get("/register", checkNotAuthenticated, function (req, res, next) {
   res.render("register", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
 router.post(
