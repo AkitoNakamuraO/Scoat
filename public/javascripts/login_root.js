@@ -16,12 +16,14 @@ const displayPart = function () {
 //セッションに名前がなかったら、表示する
 const showPart = function () {
   const locationId = document.getElementById("locationPart");
-  const locationName = document.createElement("h2");
+  const locationName = document.createElement("label");
   const locationInput = document.createElement("input");
 
   locationName.innerHTML = "場所の名前";
+  locationName.setAttribute("for", "location");
   locationInput.type = "text";
   locationInput.name = "location";
+  locationInput.className = "form-control";
   locationInput.placeholder = "input location";
   locationId.appendChild(locationName);
   locationId.appendChild(locationInput);

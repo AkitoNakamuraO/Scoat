@@ -36,7 +36,7 @@ router.get("/getData", async (req, res, next) => {
   const location = req.session.location;
   const sql = "SELECT * FROM admins JOIN spaces WHERE spaces.space_name = ? AND admins.admin_email = ? AND admins.space_id = spaces.space_id";
   const admin = await getAdminData(sql, location, mail);
-  if(req.session.spaceId == undefined) req.session.spaceId = admin[0].space_id;
+  if (req.session.spaceId == undefined) req.session.spaceId = admin[0].space_id;
   res.json(admin);
 });
 
