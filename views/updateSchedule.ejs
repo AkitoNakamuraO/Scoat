@@ -1,4 +1,4 @@
-　<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Scoat</title>
@@ -12,14 +12,18 @@
     <link rel="stylesheet" href="/stylesheets/style.css" />
   </head>
   <body>
-    <h1>Scoat</h1>
-    <form action="/schedule/update" method="POST">
-      <input type="date" name="date" />
-      <input type="time" name="start" />
-      <input type="time" name="end" />
-      <textarea name="contents"></textarea>
-      <button type="submit">登録</button>
-    </form>
-    <a href="/schedule/return-schedules">戻る</a>
+    <nav class="navbar navbar-dark bg-primary mb-5">
+      <a href="/" class="navbar-brand">Scoat</a>
+    </nav>
+    <div class="container">
+      <form action="/schedule/update" method="POST">
+        <input class="form-control mb-4" type="date" name="date" />
+        <input class="form-control mb-4" type="time" name="start" />
+        <input class="form-control mb-4" type="time" name="end" />
+        <textarea class="form-control mb-4" name="contents"></textarea>
+        <button class="btn btn-primary mr-2" type="submit">登録</button>
+        <a href="/schedule/return-schedules" class="btn btn-secondary">戻る</a>
+      </form>
+    </div>
   </body>
 </html>
