@@ -12,10 +12,10 @@ const getUserData = function () {
   };
 };
 
-const copy = function(){
+const copy = function () {
   const copyTarget = document.getElementById("copyTarget");
   copyTarget.select();
-  if(document.execCommand('copy')) alert('クリップボードにコピーしました.');
+  if (document.execCommand("copy")) alert("クリップボードにコピーしました.");
 };
 
 const displayData = function (data) {
@@ -25,20 +25,21 @@ const displayData = function (data) {
   const url = document.getElementById("url");
   const copyButton = document.getElementById("copyButton");
 
-  const p_place = document.createElement("p");
-  const p_description = document.createElement("p");
-  const p_email = document.createElement("p");
-  const p_url = document.createElement("input");
+  const h3_place = document.createElement("h3");
+  const h3_description = document.createElement("h3");
+  const h3_email = document.createElement("h3");
+  const i_url = document.createElement("input");
 
-  p_place.innerHTML = data[0].space_name;
-  p_description.innerHTML = data[0].space_description;
-  p_email.innerHTML = data[0].admin_email;
-  p_url.value = data[0].space_url;
+  h3_place.innerHTML = data[0].space_name;
+  h3_description.innerHTML = data[0].space_description;
+  h3_email.innerHTML = data[0].admin_email;
+  i_url.value = data[0].space_url;
+  i_url.className = "form-control";
 
-  place.appendChild(p_place);
-  description.appendChild(p_description);
-  email.appendChild(p_email);
-  const pUrl = url.insertBefore(p_url, copyButton);
+  place.appendChild(h3_place);
+  description.appendChild(h3_description);
+  email.appendChild(h3_email);
+  const pUrl = url.insertBefore(i_url, copyButton);
 
   pUrl.id = "copyTarget";
 };

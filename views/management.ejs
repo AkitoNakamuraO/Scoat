@@ -1,54 +1,42 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <title>Scoat</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-<head>
-  <title>Scoat</title>
-  <!-- bootstrap -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  
-  <link rel="stylesheet" href="/stylesheets/normalize.css" />
-  <link rel="stylesheet" href="/stylesheets/style.css" />
-  <script src="/javascripts/management.js"></script>
-</head>
+    <link rel="stylesheet" href="/stylesheets/normalize.css" />
+    <link rel="stylesheet" href="/stylesheets/style.css" />
+    <script src="/javascripts/management.js"></script>
+  </head>
 
-<body>
-  <header>
-    <h1>Scoat</h1>
-    <p>Welcome to Scoat</p>
-    <a href="/admins/logout">ログアウト</a>
-  </header>
-  <main>
+  <body>
+    <nav class="navbar navbar-dark bg-primary mb-5">
+      <a href="/" class="navbar-brand">Scoat</a>
+      <a href="/admins/logout" class="btn btn-success">ログアウト</a>
+    </nav>
 
-    <div id="place">
-      <p>場所の名前</p>
+    <div class="container">
+      <div id="place" class="mb-5">
+        <h2>場所の名前</h2>
+      </div>
+      <div id="email" class="mb-5">
+        <h2>管理者メールアドレス</h2>
+      </div>
+      <div id="description" class="mb-5">
+        <h2>場所の説明</h2>
+      </div>
+      <div id="url" class="mb-5">
+        <h2>URL</h2>
+        <button id="copyButton" onclick="copy()" class="btn btn-primary mt-2">コピー 📋️</button>
+      </div>
+
+      <a href="/management/updatePwd" class="btn btn-secondary d-block mb-3">パスワード変更</a>
+      <a href="/management/updatePlace" class="btn btn-secondary d-block mb-3">場所情報を編集</a>
+      <a href="/management/display" class="btn btn-primary d-block mb-3">カレンダーを表示</a>
     </div>
-    <div id="email">
-      <p>管理者メールアドレス</p>
-    </div>
-    <div id="description">
-      <p>場所の説明</p>
-    </div>
-    <div id="url" style ="position: relative; display: inline-block;">
-      <p>URL</p>
-      <input type="button" value="コピー📋️" onclick="copy()" id="copyButton">
-    </div>
-
-    <div>
-      <form action="/management/updatePwd" method="GET" />
-      <p><input type="submit" value="パスワード変更" /></p>
-      </form>
-      <form action="/management/updatePlace" method="GET" />
-      <p><input type="submit" value="場所情報を編集" /></p>
-      </form>
-      <form action="/management/display" method="GET" />
-      <p><input type="submit" value="カレンダーを表示" /></p>
-      </form>
-    </div>
-
-  </main>
-</body>
-
+  </body>
 </html>
