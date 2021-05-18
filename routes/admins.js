@@ -124,7 +124,7 @@ router.post(
   },
   passport.authenticate("local", {
     successRedirect: "/management",
-    failureRedirect: "/admins/login",
+    failureRedirect: "/admins/login/public",
     failureFlash: true,
   })
 );
