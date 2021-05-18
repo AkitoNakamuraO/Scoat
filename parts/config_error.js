@@ -51,16 +51,15 @@ async function isUnique(req, res, next){
   let file = "register";
   const location = req.body.location;
   const mail = req.body.mail;
-  const mailErrors = [];
+  let mailErrors = [];
   let sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email ='"+mail+"';";
   if(req.session.spaceId != undefined){
     sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email ='"+req.session.mail+"';";
     file = "updatePlace";
   }
   const data = await checkData(sql);
-  var i,count=0;
 
-  for(i=0;i<data.length;i++){
+  for(let i=0;i<data.length;i++){
     if(location == data[i].space_name){
       mailErrors.push("場所が重複しています。");
       mailErrors.push("(※)1つのメールに複数の同じ名前の場所は登録できません。");
@@ -69,6 +68,7 @@ async function isUnique(req, res, next){
     }
   }
 
+  if(file=="updatePlace" && req.body.location == req.session.location) mailErrors=[];
   if(mailErrors.length > 0) res.render(file, {locationErrors: [], mailErrors: mailErrors, passErrors: []});
   else next();
 }
