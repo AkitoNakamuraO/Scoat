@@ -12,12 +12,13 @@ passport.use(
     {
       usernameField: "mail",
       passwordField: "password",
+      passReqToCallback: true,
     },
-    async function (username, password, done) {
-      const sql = "SELECT * FROM admins WHERE admin_email = ?";
+    async function (req, username, password, done) {
+      const sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email = ?";
       const users = await checkUser(sql, username);
       for (i = 0; i < users.length; i++) {
-        if (await bcrypt.compare(password, users[i].admin_password)) {
+        if (await bcrypt.compare(password, users[i].admin_password) && users[i].space_name == req.body.location) {
           return done(null, { username, password, id: users[i].admin_id });
         }
       }
