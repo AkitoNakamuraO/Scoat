@@ -18,7 +18,7 @@ passport.use(
       const sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email = ?";
       const users = await checkUser(sql, username);
       for (i = 0; i < users.length; i++) {
-        if (await bcrypt.compare(password, users[i].admin_password) && users[i].space_name == req.body.location) {
+        if ((await bcrypt.compare(password, users[i].admin_password)) && users[i].space_name == req.body.location) {
           return done(null, { username, password, id: users[i].admin_id });
         }
       }
@@ -31,13 +31,9 @@ function insertPlace(sql, location, description, url) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
-    connection.query(
-      sql,
-      [location, description, url],
-      function (err, rows, fields) {
-        resolve(rows);
-      }
-    );
+    connection.query(sql, [location, description, url], function (err, rows, fields) {
+      resolve(rows);
+    });
     connection.end();
   });
 }
@@ -46,13 +42,9 @@ function insertAdmin(sql, spaceId, mail, password) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
-    await connection.query(
-      sql,
-      [spaceId, mail, password],
-      function (err, rows, fields) {
-        resolve(rows);
-      }
-    );
+    await connection.query(sql, [spaceId, mail, password], function (err, rows, fields) {
+      resolve(rows);
+    });
     connection.end();
   });
 }
@@ -102,6 +94,7 @@ const getSpaceName = function (sql, spaceId) {
 
 // login from index
 router.get("/login/public", function (req, res, next) {
+  req.logout();
   req.session.destroy();
   res.render("login", { locationErrors: [], mailErrors: [], passErrors: [] });
 });
@@ -116,8 +109,7 @@ router.post(
   "/login",
   function (req, res, next) {
     req.session.mail = req.body.mail;
-    if (req.session.location == undefined)
-      req.session.location = req.body.location;
+    if (req.session.location == undefined) req.session.location = req.body.location;
     isEmpty(req, res, next);
   },
   function (req, res, next) {
@@ -157,12 +149,9 @@ router.post(
     const { location, mail, password, description } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const sqlSpace1 =
-      "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
-    const sqlSpace2 =
-      "SELECT * FROM spaces  WHERE space_name = ? AND space_url = ?;";
-    const sqlAdmin =
-      "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
+    const sqlSpace1 = "INSERT INTO spaces(space_name, space_description, space_url) VALUES(?,?,?);";
+    const sqlSpace2 = "SELECT * FROM spaces  WHERE space_name = ? AND space_url = ?;";
+    const sqlAdmin = "INSERT INTO admins(space_id, admin_email, admin_password) VALUES(?,?,?);";
     const sqlUpdate = "UPDATE spaces SET space_url = ? WHERE space_url = '-1';";
 
     await insertPlace(sqlSpace1, location, description, "-1");
@@ -178,7 +167,7 @@ router.post(
 
 // logout
 router.get("/logout", function (req, res, next) {
-  req.session.destroy();
+  req.logout();
   res.redirect("/");
 });
 

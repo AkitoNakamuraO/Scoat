@@ -33,7 +33,7 @@ const getSchedule = function () {
 };
 
 // 一週間分の予定を表示
-const scheduleColor = ["green", "yellow", "coral", "cyan", "darkorchid", "darkorchid"];
+const scheduleColor = ["green", "magenta", "navy", "cyan", "springgreen", "tomato", "blue", "darkorange"];
 const createWeek = function (schedules) {
   let hourFlag = false; // 予定があるかを判断するためのフラグ（時間）
   let minuteFlag = false; // 予定があるかを判断するためのフラグ（分）
@@ -56,8 +56,7 @@ const createWeek = function (schedules) {
     while (true) {
       if (j >= 3 && schedules[i].length <= 3) break;
       if (j >= 3 && j == schedules[i].length) break;
-      const random = Math.floor(Math.random() * 7);
-      console.log(scheduleColor[random]);
+      const random = Math.floor(Math.random() * 8);
       const time = document.createElement("div");
       time.classList.add("time");
       for (let k = 0; k < HOURS; k++) {
