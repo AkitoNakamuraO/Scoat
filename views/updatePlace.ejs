@@ -16,19 +16,20 @@
       <a href="/" class="navbar-brand">Scoat</a>
     </nav>
     <div class="container">
-      <form action="/management" method="`POST">
+      <form action="/management/updatePlace" method="POST">
         <div class="mb-5">
           <h2>場所の名前</h2>
-          <input type="space-neme" name="space-name" class="form-control" />
+          <input type="space-neme" name="location" class="form-control" />
         </div>
         <div class="mb-5">
           <h2>管理者メールアドレス</h2>
-          <input type="email" name="email" class="form-control" />
+          <input type="email" name="mail" class="form-control" />
         </div>
         <div class="mb-5">
           <h2>場所の説明</h2>
-          <input type="textarea" name="text" class="form-control" />
+          <input type="textarea" name="description" class="form-control" />
         </div>
+        <%- include("login_error",{locationErrors: locationErrors, mailErrors: mailErrors, passErrors:passErrors}); %>
         <button type="submit" class="btn btn-primary">更新</button>
         <a href="/management" class="btn btn-secondary">戻る</a>
       </form>

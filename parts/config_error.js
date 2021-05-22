@@ -1,10 +1,10 @@
 const createConnection = require("../parts/connectDB");
 
-function checkData(sql, email) {
+function checkData(sql) {
   return new Promise(async (resolve) => {
     const connection = await createConnection();
     connection.connect();
-    await connection.query(sql, email, function (err, rows, fields) {
+    await connection.query(sql, function (err, rows, fields) {
       resolve(rows);
     });
     connection.end();
@@ -48,14 +48,18 @@ function isCorrect(req, res, next) {
 }
 
 async function isUnique(req, res, next){
+  let file = "register";
   const location = req.body.location;
   const mail = req.body.mail;
-  const mailErrors = [];
-  const sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email = ?";
-  const data = await checkData(sql, mail);
-  var i,count=0;
+  let mailErrors = [];
+  let sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email ='"+mail+"';";
+  if(req.session.spaceId != undefined){
+    sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email ='"+req.session.mail+"';";
+    file = "updatePlace";
+  }
+  const data = await checkData(sql);
 
-  for(i=0;i<data.length;i++){
+  for(let i=0;i<data.length;i++){
     if(location == data[i].space_name){
       mailErrors.push("場所が重複しています。");
       mailErrors.push("(※)1つのメールに複数の同じ名前の場所は登録できません。");
@@ -64,8 +68,27 @@ async function isUnique(req, res, next){
     }
   }
 
-  if(mailErrors.length > 0) res.render("register", {locationErrors: [], mailErrors: mailErrors, passErrors: []});
+  if(file=="updatePlace" && req.body.location == req.session.location) mailErrors=[];
+  if(mailErrors.length > 0) res.render(file, {locationErrors: [], mailErrors: mailErrors, passErrors: []});
   else next();
 }
 
-module.exports = { isEmpty, isCorrect, isUnique};
+function checkPassword(req, res, next){
+  // 入力値取得
+  const password = req.body.password;
+  const confirm = req.body.confirm;
+  const passErrors = [];
+  // パスワード比較
+  if (password != confirm) {
+    passErrors.push("パスワードが一致しません。");
+    res.render("updatePassword", {
+      locationErrors: [],
+      mailErrors: [],
+      passErrors: passErrors,
+    });
+  } else {
+    next();
+  }
+}
+
+module.exports = { isEmpty, isCorrect, isUnique, checkPassword};

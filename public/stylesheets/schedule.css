@@ -56,8 +56,23 @@
   width: var(--time-width);
   height: calc(var(--hour-height) / 60);
 }
-.scheduled {
+.green {
   background-color: green;
+}
+.yellow {
+  background-color: yellow;
+}
+.coral {
+  background-color: coral;
+}
+.cyan {
+  background-color: cyan;
+}
+.darkorchid {
+  background-color: darkorchid;
+}
+.darkorchid {
+  background-color: lightpink;
 }
 
 /* 予定詳細 */
