@@ -10,6 +10,8 @@ Scoat
 
 ユーザー次第で無限の使い方があります。
 
+基本的にスマホで使うことを想定しています。
+
 # URL
 
 https://space-consists-of-all-things.herokuapp.com/
