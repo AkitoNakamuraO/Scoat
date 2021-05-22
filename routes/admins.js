@@ -139,7 +139,7 @@ router.post(
     isUnique(req, res, next);
   },
   async function (req, res, next) {
-    const url = "http://localhost:3000/schedule/space/";
+    const url = "https://scoat.herokuapp.com/schedule/space/";
     const { location, mail, password, description } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
