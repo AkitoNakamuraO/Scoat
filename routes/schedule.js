@@ -121,10 +121,11 @@ router.post("/register", async function (req, res, next) {
   const spaceId = req.session.spaceId;
   if (date.length <= 0 || start.length <= 0 || end.length <= 0 || contents.length <= 0) {
     res.redirect("register");
+  } else {
+    const sql = "INSERT INTO schedules(space_id, schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?, ?);";
+    await registerSchedules(sql, spaceId, date, start, end, contents);
+    res.redirect("space/" + spaceId);
   }
-  const sql = "INSERT INTO schedules(space_id, schedule_date, schedule_start_time, schedule_end_time, schedule_contents) values(?, ?, ?, ?, ?);";
-  await registerSchedules(sql, spaceId, date, start, end, contents);
-  res.redirect("space/" + spaceId);
 });
 
 // 予定更新

@@ -34,6 +34,7 @@ const getSchedule = function () {
 };
 
 // 一週間分の予定を表示
+const scheduleColor = ["green", "yellow", "coral", "cyan", "darkorchid", "darkorchid"];
 const createWeek = function (schedules) {
   let hourFlag = false; // 予定があるかを判断するためのフラグ（時間）
   let minuteFlag = false; // 予定があるかを判断するためのフラグ（分）
@@ -56,6 +57,8 @@ const createWeek = function (schedules) {
     while (true) {
       if (j >= 3 && schedules[i].length <= 3) break;
       if (j >= 3 && j == schedules[i].length) break;
+      const random = Math.floor(Math.random() * 7);
+      console.log(scheduleColor[random]);
       const time = document.createElement("div");
       time.classList.add("time");
       for (let k = 0; k < HOURS; k++) {
@@ -79,7 +82,7 @@ const createWeek = function (schedules) {
             }
           }
           if (minuteFlag == true) {
-            minute.classList.add("scheduled");
+            minute.classList.add(scheduleColor[random]);
             const scheduleId = schedules[i][j].id;
             minute.setAttribute("onclick", `displayDetails(${scheduleId})`);
             minute.setAttribute("data-toggle", "modal");
