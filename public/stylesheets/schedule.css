@@ -59,20 +59,26 @@
 .green {
   background-color: green;
 }
-.yellow {
-  background-color: yellow;
+.magenta {
+  background-color: magenta;
 }
-.coral {
-  background-color: coral;
+.navy {
+  background-color: navy;
 }
 .cyan {
   background-color: cyan;
 }
-.darkorchid {
-  background-color: darkorchid;
+.springgreen {
+  background-color: springgreen;
 }
-.darkorchid {
-  background-color: lightpink;
+.tomato {
+  background-color: tomato;
+}
+.blue {
+  background-color: blue;
+}
+.darkorange {
+  background-color: darkorange;
 }
 
 /* 予定詳細 */
