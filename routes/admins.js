@@ -145,7 +145,7 @@ router.post(
     isUnique(req, res, next);
   },
   async function (req, res, next) {
-    const url = "https://scoat.herokuapp.com/schedule/space/";
+    const url = "https://space-consists-of-all-things.herokuapp.com/schedule/space/";
     const { location, mail, password, description } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
 
