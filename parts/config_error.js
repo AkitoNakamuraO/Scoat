@@ -12,6 +12,7 @@ function checkData(sql) {
 }
 
 function isEmpty(req, res, next) {
+  let file = "register";
   const locationErrors = [];
   const mailErrors = [];
   const passErrors = [];
@@ -19,12 +20,15 @@ function isEmpty(req, res, next) {
   const mail = req.body.mail;
   const password = req.body.password;
 
+  //login画面から来た場合
+  if (req.session.login != undefined) file = "login";
+  
   if (location == "") locationErrors.push("場所を入力してください。");
   if (mail === "") mailErrors.push("Eメールを入力してください。");
   if (password === "") passErrors.push("パスワードを入力してください。");
-
+  
   if (locationErrors.length > 0 || mailErrors.length > 0 || passErrors.length > 0) {
-    res.render("register", {
+    res.render(file, {
       locationErrors: locationErrors,
       mailErrors: mailErrors,
       passErrors: passErrors,
@@ -33,13 +37,17 @@ function isEmpty(req, res, next) {
 }
 
 function isCorrect(req, res, next) {
+  let file = "register";
   const mailErrors = [];
   const reg = /^[A-Za-z0-9]{1}[A-Za-z0-9_.-]*@{1}[A-Za-z0-9_.-]{1,}\.[A-Za-z0-9]{1,}$/;
   const email = req.body.mail;
-
+  
   if (reg.test(email) === false) mailErrors.push("有効なメールアドレスを入力してください。");
+  
+  //login画面から来た場合
+  if (req.session.login != undefined) file = "login";
 
-  if (mailErrors.length > 0) res.render("register", { locationErrors: [], mailErrors: mailErrors, passErrors: [] });
+  if (mailErrors.length > 0) res.render(file, { locationErrors: [], mailErrors: mailErrors, passErrors: [] });
   else next();
 }
 
