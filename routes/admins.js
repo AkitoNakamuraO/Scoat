@@ -18,7 +18,7 @@ passport.use(
       const sql = "SELECT * FROM admins JOIN spaces ON admins.space_id = spaces.space_id WHERE admins.admin_email = ?";
       const users = await checkUser(sql, username);
       for (i = 0; i < users.length; i++) {
-        if ((await bcrypt.compare(password, users[i].admin_password)) && users[i].space_name == req.body.location) {
+        if ((await bcrypt.compare(password, users[i].admin_password)) && (users[i].space_name == req.body.location || users[i].space_name == req.session.location)) {
           return done(null, { username, password, id: users[i].admin_id });
         }
       }
@@ -109,6 +109,7 @@ router.post(
   "/login",
   function (req, res, next) {
     req.session.mail = req.body.mail;
+    req.session.login = true;
     if (req.session.location == undefined) req.session.location = req.body.location;
     isEmpty(req, res, next);
   },
