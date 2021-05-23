@@ -21,5 +21,5 @@ https://space-consists-of-all-things.herokuapp.com/
 # 使用技術
 
 - Node.js
-- EXpress 
+- Express 
 - Bootstrap
